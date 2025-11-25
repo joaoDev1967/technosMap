@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnosMap</title>
+    <link rel="stylesheet" href="style.css">
+    <link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+    <link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1 style="background-color: '#00124B';">TechnosMap</h1>
+    </header>
+    <div id="temperatura_pressao">
+        <div id="grafico_monitoramento"></div>
+    </div>
+    <div id="glowscript" class="glowscript"></div>
+
+<script>
+    ;(function() {;
+    var ρσ_modules = {};
+    ρσ_modules.pythonize = {};
+    ρσ_modules.random = {};
+
+    (function(){
+    function strings() {
+        var string_funcs, exclude, name;
+        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+        if (!arguments.length) {
+            exclude = (function(){
+                var s = ρσ_set();
+                s.jsset.add("split");
+                s.jsset.add("replace");
+                return s;
+            })();
+        } else if (arguments[0]) {
+            exclude = Array.prototype.slice.call(arguments);
+        } else {
+            exclude = null;
+        }
+        if (exclude) {
+            string_funcs = string_funcs.difference(set(exclude));
+        }
+        var ρσ_Iter0 = string_funcs;
+        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+        for (var ρσ_Index0 of ρσ_Iter0) {
+            name = ρσ_Index0;
+            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+        }
+    };
+    if (!strings.__module__) Object.defineProperties(strings, {
+        __module__ : {value: "pythonize"}
+    });
+
+    ρσ_modules.pythonize.strings = strings;
+})();
+
+(function(){
+    var ρσ_seed_state, ρσ_get_random_byte;
+    ρσ_seed_state = (function(){
+        var ρσ_d = {};
+        ρσ_d["key"] = ρσ_list_decorate([]);
+        ρσ_d["key_i"] = 0;
+        ρσ_d["key_j"] = 0;
+        return ρσ_d;
+    }).call(this);
+    ρσ_get_random_byte = (function() {
+        var ρσ_anonfunc = function () {
+            var ρσ_unpack;
+            ρσ_seed_state.key_i = (ρσ_seed_state.key_i + 1) % 256;
+            ρσ_seed_state.key_j = (ρσ_seed_state.key_j + (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_i, ρσ_expr_temp)]) % 256;
+            ρσ_unpack = [(ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_j, ρσ_expr_temp)], 
+            (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_i, ρσ_expr_temp)]];
+            (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_i, ρσ_expr_temp)] = ρσ_unpack[0];
+            (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_j, ρσ_expr_temp)] = ρσ_unpack[1];
+            return (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(((ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_i, ρσ_expr_temp)] + (ρσ_expr_temp = ρσ_seed_state.key)[ρσ_bound_index(ρσ_seed_state.key_j, ρσ_expr_temp)]) % 256, ρσ_expr_temp)];
+        };
+        if (!ρσ_anonfunc.__module__) Object.defineProperties(ρσ_anonfunc, {
+            __module__ : {value: "random"}
+        });
+        return ρσ_anonfunc;
+    })();
+    function seed() {
+        var x = (arguments[0] === undefined || ( 0 === arguments.length-1 && arguments[arguments.length-1] !== null && typeof arguments[arguments.length-1] === "object" && arguments[arguments.length-1] [ρσ_kwargs_symbol] === true)) ? seed.__defaults__.x : arguments[0];
+        var ρσ_kwargs_obj = arguments[arguments.length-1];
+        if (ρσ_kwargs_obj === null || typeof ρσ_kwargs_obj !== "object" || ρσ_kwargs_obj [ρσ_kwargs_symbol] !== true) ρσ_kwargs_obj = {};
+        if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "x")){
+            x = ρσ_kwargs_obj.x;
+        }
+        var i, j, ρσ_unpack;
+        ρσ_seed_state.key_i = ρσ_seed_state.key_j = 0;
+        if (typeof x === "number") {
+            x = x.toString();
+        } else if (typeof x !== "string") {
+            throw new TypeError("unhashable type: '" + typeof x + "'");
+        }
+        for (var ρσ_Index1 = 0; ρσ_Index1 < 256; ρσ_Index1++) {
+            i = ρσ_Index1;
+            (ρσ_expr_temp = ρσ_seed_state.key)[(typeof i === "number" && i < 0) ? ρσ_expr_temp.length + i : i] = i;
+        }
+        j = 0;
+        for (var ρσ_Index2 = 0; ρσ_Index2 < 256; ρσ_Index2++) {
+            i = ρσ_Index2;
+            j = (j + (ρσ_expr_temp = ρσ_seed_state.key)[(typeof i === "number" && i < 0) ? ρσ_expr_temp.length + i : i] + x.charCodeAt(i % x.length)) % 256;
+            ρσ_unpack = [(ρσ_expr_temp = ρσ_seed_state.key)[(typeof j === "number" && j < 0) ? ρσ_expr_temp.length + j : j], 
+            (ρσ_expr_temp = ρσ_seed_state.key)[(typeof i === "number" && i < 0) ? ρσ_expr_temp.length + i : i]];
+            (ρσ_expr_temp = ρσ_seed_state.key)[(typeof i === "number" && i < 0) ? ρσ_expr_temp.length + i : i] = ρσ_unpack[0];
+            (ρσ_expr_temp = ρσ_seed_state.key)[(typeof j === "number" && j < 0) ? ρσ_expr_temp.length + j : j] = ρσ_unpack[1];
+        }
+    };
+    if (!seed.__defaults__) Object.defineProperties(seed, {
+        __defaults__ : {value: {x:(new Date).getTime()}},
+        __handles_kwarg_interpolation__ : {value: true},
+        __argnames__ : {value: ["x"]},
+        __module__ : {value: "random"}
+    });
+
+    seed();
+    function random() {
+        var n, m, i;
+        n = 0;
+        m = 1;
+        for (var ρσ_Index3 = 0; ρσ_Index3 < 8; ρσ_Index3++) {
+            i = ρσ_Index3;
+            n += ρσ_get_random_byte() * m;
+            m *= 256;
+        }
+        return n / 0x10000000000000000;
+    };
+    if (!random.__module__) Object.defineProperties(random, {
+        __module__ : {value: "random"}
+    });
+
+    function randrange() {
+        var start, stop, step, width, n;
+        if (arguments.length === 1) {
+            return randbelow(int(arguments[0]));
+        }
+        start = int(arguments[0]);
+        stop = int(arguments[1]);
+        if (arguments.length < 3) {
+            step = 1;
+        } else {
+            step = int(arguments[2]);
+        }
+        width = stop - start;
+        if (step === 1) {
+            if (width > 0) {
+                return start + randbelow(width);
+            }
+            throw new ValueError("empty range for randrange()");
+        }
+        if (step > 0) {
+            n = Math.floor((width + step - 1) / step);
+        } else if (step < 0) {
+            n = Math.floor((width + step + 1) / step);
+        } else {
+            throw new ValueError("zero step for randrange()");
+        }
+        if (n <= 0) {
+            throw new ValueError("empty range in randrange(" + ρσ_str.format("{}", start) + ", " + ρσ_str.format("{}", stop) + ", " + ρσ_str.format("{}", step) + ")");
+        }
+        return start + step * randbelow(n);
+    };
+    if (!randrange.__module__) Object.defineProperties(randrange, {
+        __module__ : {value: "random"}
+    });
+
+    function randint(a, b) {
+        return int(random() * (b - a + 1) + a);
+    };
+    if (!randint.__argnames__) Object.defineProperties(randint, {
+        __argnames__ : {value: ["a", "b"]},
+        __module__ : {value: "random"}
+    });
+
+    function uniform(a, b) {
+        return random() * (b - a) + a;
+    };
+    if (!uniform.__argnames__) Object.defineProperties(uniform, {
+        __argnames__ : {value: ["a", "b"]},
+        __module__ : {value: "random"}
+    });
+
+    function randbelow(n) {
+        return Math.floor(random() * n);
+    };
+    if (!randbelow.__argnames__) Object.defineProperties(randbelow, {
+        __argnames__ : {value: ["n"]},
+        __module__ : {value: "random"}
+    });
+
+    function choice(seq) {
+        if (seq.length > 0) {
+            return seq[ρσ_bound_index(randbelow(seq.length), seq)];
+        } else {
+            throw new IndexError;
+        }
+    };
+    if (!choice.__argnames__) Object.defineProperties(choice, {
+        __argnames__ : {value: ["seq"]},
+        __module__ : {value: "random"}
+    });
+
+    function shuffle() {
+        var x = ( 0 === arguments.length-1 && arguments[arguments.length-1] !== null && typeof arguments[arguments.length-1] === "object" && arguments[arguments.length-1] [ρσ_kwargs_symbol] === true) ? undefined : arguments[0];
+        var random_f = (arguments[1] === undefined || ( 1 === arguments.length-1 && arguments[arguments.length-1] !== null && typeof arguments[arguments.length-1] === "object" && arguments[arguments.length-1] [ρσ_kwargs_symbol] === true)) ? shuffle.__defaults__.random_f : arguments[1];
+        var ρσ_kwargs_obj = arguments[arguments.length-1];
+        if (ρσ_kwargs_obj === null || typeof ρσ_kwargs_obj !== "object" || ρσ_kwargs_obj [ρσ_kwargs_symbol] !== true) ρσ_kwargs_obj = {};
+        if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "random_f")){
+            random_f = ρσ_kwargs_obj.random_f;
+        }
+        var j, ρσ_unpack, i;
+        for (var ρσ_Index4 = 0; ρσ_Index4 < x.length; ρσ_Index4++) {
+            i = ρσ_Index4;
+            j = Math.floor(random_f() * (i + 1));
+            ρσ_unpack = [x[(typeof j === "number" && j < 0) ? x.length + j : j], x[(typeof i === "number" && i < 0) ? x.length + i : i]];
+            x[(typeof i === "number" && i < 0) ? x.length + i : i] = ρσ_unpack[0];
+            x[(typeof j === "number" && j < 0) ? x.length + j : j] = ρσ_unpack[1];
+        }
+        return x;
+    };
+    if (!shuffle.__defaults__) Object.defineProperties(shuffle, {
+        __defaults__ : {value: {random_f:random}},
+        __handles_kwarg_interpolation__ : {value: true},
+        __argnames__ : {value: ["x", "random_f"]},
+        __module__ : {value: "random"}
+    });
+
+    function sample(population, k) {
+        var x, j, ρσ_unpack, i;
+        x = population.slice();
+        for (var ρσ_Index5 = population.length - 1; ρσ_Index5 > population.length - k - 1; ρσ_Index5-=1) {
+            i = ρσ_Index5;
+            j = Math.floor(random() * (i + 1));
+            ρσ_unpack = [x[(typeof j === "number" && j < 0) ? x.length + j : j], x[(typeof i === "number" && i < 0) ? x.length + i : i]];
+            x[(typeof i === "number" && i < 0) ? x.length + i : i] = ρσ_unpack[0];
+            x[(typeof j === "number" && j < 0) ? x.length + j : j] = ρσ_unpack[1];
+        }
+        return x.slice(population.length - k);
+    };
+    if (!sample.__argnames__) Object.defineProperties(sample, {
+        __argnames__ : {value: ["population", "k"]},
+        __module__ : {value: "random"}
+    });
+
+    ρσ_modules.random.ρσ_seed_state = ρσ_seed_state;
+    ρσ_modules.random.ρσ_get_random_byte = ρσ_get_random_byte;
+    ρσ_modules.random.seed = seed;
+    ρσ_modules.random.random = random;
+    ρσ_modules.random.randrange = randrange;
+    ρσ_modules.random.randint = randint;
+    ρσ_modules.random.uniform = uniform;
+    ρσ_modules.random.randbelow = randbelow;
+    ρσ_modules.random.choice = choice;
+    ρσ_modules.random.shuffle = shuffle;
+    ρσ_modules.random.sample = sample;
+})();
+async function __main__() {
+"use strict";
+    var display = canvas;
+    var scene = canvas();
+
+    function round(num, n=0) {return Number(num.toFixed(n))}
+
+    var version, print, arange, __name__, type, ρσ_ls, textura_grama, textura_grama2, textura_folhas, textura_tronco, textura_escola, g_display, plot_temp, plot_press, plot_sol, _GS_1, sol, cidade, estacao, metro1, metro2, carros, _, wt_p, dt, estado_anterior_escuro, esta_escuro, c;
+    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+    Array.prototype['+'] = function(r) {return this.concat(r)}
+    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+    window.__GSlang = "vpython";
+    print = GSprint;
+    arange = range;
+    __name__ = "__main__";
+    type = pytype;
+    var strings = ρσ_modules.pythonize.strings;
+
+    strings();
+    var random = ρσ_modules.random;
+
+    "4";
+    scene.width = 900;
+    "5";
+    scene.height = 600;
+    "6";
+    scene.center = vec(0, 5, 1["-u"]()["*"](30));
+    "7";
+    scene.camera.pos = vec(60, 90, 110);
+    "8";
+    scene.camera.axis = vec(1["-u"]()["*"](60), 1["-u"]()["*"](90), 1["-u"]()["*"](110));
+    "9";
+    scene.background = color.black;
+    "12";
+    textura_grama = "https://i.ibb.co/QvGNk2Nt/Chat-GPT-Image-25-de-nov-de-2025-14-08-18-1.png";
+    "13";
+    textura_grama2 = "https://i.ibb.co/DfRZz4r8/Chat-GPT-Image-25-de-nov-de-2025-14-08-18.png";
+    "14";
+    textura_folhas = "https://static.vecteezy.com/system/resources/thumbnails/029/871/606/small/leafy-background-seamless-green-background-of-plants-seamless-background-of-leaves-illustration-vector.jpg";
+    "15";
+    textura_tronco = "https://i.ibb.co/bjyM9Kxd/tronco-madeira.jpg";
+    "16";
+    textura_escola = "https://i.ibb.co/XxkhcpQn/villa-Text.png";
+    "21";
+    g_display = ρσ_interpolate_kwargs.call(this, graph, [ρσ_desugar_kwargs({title: "Monitoramento Ambiental", width: 900, height: 200, xtitle: "Tempo (s)", ytitle: "Escalas Variadas", fast: false, scroll: true, xmin: 0, xmax: 50})]);
+    "24";
+    plot_temp = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.red, label: "Temperatura (°C)"})]);
+    "25";
+    plot_press = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.blue, label: "Pressão (hPa/10 - Norm)"})]);
+    "26";
+    plot_sol = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.yellow, label: "Radiação Solar"})]);
+    "30";
+    function CicloSolar() {;
+    }
+    CicloSolar.prototype.__init__ = async function __init__() {
+        var self = this;
+        "32";
+        self.raio_orbita = 140;
+        "33";
+        self.angulo = .5;
+        "34";
+        self.velocidade = .2;
+        "36";
+        self.esfera = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(self.raio_orbita, 0, 0), radius: 2, color: color.yellow, emissive: true})]);
+        "37";
+        self.luz = ρσ_interpolate_kwargs.call(this, local_light, [ρσ_desugar_kwargs({pos: self.esfera.pos, color: color.white})]);
+        "39";
+        self.eh_dia = true;
+        "40";
+        self.fator_iluminacao = 1;
+    };
+    if (!CicloSolar.prototype.__init__.__module__) Object.defineProperties(CicloSolar.prototype.__init__, {
+        __module__ : {value: null}
+    });
+    CicloSolar.__argnames__ = CicloSolar.prototype.__init__.__argnames__;
+    CicloSolar.__handles_kwarg_interpolation__ = CicloSolar.prototype.__init__.__handles_kwarg_interpolation__;
+    CicloSolar.prototype.atualizar = async function atualizar(dt, tem_tempestade) {
+        var self = this;
+        var ρσ_ls, x, y, altura_norm, target_bg;
+        "43";
+        self.angulo=self.angulo["+"](self.velocidade["*"](dt));
+        "44";
+        x = self.raio_orbita["*"](cos(self.angulo));
+        "45";
+        y = self.raio_orbita["*"](sin(self.angulo));
+        "47";
+        self.esfera.pos = vec(x, y, 0);
+        "48";
+        self.luz.pos = self.esfera.pos;
+        "50";
+        altura_norm = y["/"](self.raio_orbita);
+        "51";
+        self.fator_iluminacao = max(0, altura_norm);
+        "53";
+        if (tem_tempestade) {
+            "54";
+            target_bg = vec(.15, .15, .2);
+            "55";
+            self.luz.color = vec(.3, .3, .3);
+            "56";
+            self.eh_dia = false;
+            "57";
+        } else if (altura_norm[">"](0)) {
+            "58";
+            target_bg = vec(.4["*"](altura_norm), .7["*"](altura_norm), 1["*"](altura_norm));
+            "59";
+            self.luz.color = vec(1, 1, 1)["*"](.3["+"](.7["*"](altura_norm)));
+            "60";
+            self.eh_dia = true;
+            "61";
+        } else {
+            "62";
+            target_bg = vec(0, 0, .05);
+            "63";
+            self.luz.color = vec(.1, .1, .15);
+            "64";
+            self.eh_dia = false;
+        }
+        "66";
+        scene.background = target_bg;
+    };
+    if (!CicloSolar.prototype.atualizar.__argnames__) Object.defineProperties(CicloSolar.prototype.atualizar, {
+        __argnames__ : {value: ["dt", "tem_tempestade"]},
+        __module__ : {value: null}
+    });
+    CicloSolar.prototype.__repr__ = async function __repr__() {
+                return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+    };
+    CicloSolar.prototype.__str__ = async function __str__() {
+        return this.__repr__();
+    };
+    Object.defineProperty(CicloSolar.prototype, "__bases__", {value: []});
+    
+    
+
+    "70";
+    function Carro() {;
+    }
+    Carro.prototype.__init__ = async function __init__() {
+        var self = this;
+        var eixo = ( 0 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true) ? undefined : arguments[0];
+        var direcao = ( 1 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true) ? undefined : arguments[1];
+        var z_base = (arguments[2] === undefined || ( 2 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true)) ? __init__.__defaults__.z_base : arguments[2];
+        var ρσ_kwargs_obj = arguments[arguments.length["-"](1)];
+        if (ρσ_kwargs_obj === null || typeof ρσ_kwargs_obj !== "object" || ρσ_kwargs_obj [ρσ_kwargs_symbol] !== true) ρσ_kwargs_obj = {};
+        if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "z_base")){
+            z_base = ρσ_kwargs_obj.z_base;
+        }
+        var ρσ_ls, start, offset, cor, faixa, pos, size, f_local_offset, dir_luz, luz, i;
+        "72";
+        self.eixo = eixo;
+        "73";
+        self.direcao = direcao;
+        "74";
+        self.z_base = z_base;
+        "75";
+        start = 1["-u"]()["*"](80)["*"](direcao);
+        "76";
+        offset = 3.5;
+        "78";
+        cor = vec(random.random(), random.random(), random.random());
+        "80";
+        if ((eixo === "x" || typeof eixo === "object" && ρσ_equals(eixo, "x"))) {
+            "82";
+            faixa = random.choice(ρσ_list_decorate([ 2, 5 ]));
+            "85";
+            pos = vec(start, .6, self.z_base["+"](faixa["*"](((direcao === 1 || typeof direcao === "object" && ρσ_equals(direcao, 1))) ? 1 : 1["-u"]()["*"](1))));
+            "86";
+            size = vec(4, 1.5, 2);
+            "87";
+            self.vel_vec = vec(1, 0, 0);
+            "88";
+        } else {
+            "89";
+            pos = vec(1["-u"]()["*"](offset), .6, start);
+            "90";
+            size = vec(2, 1.5, 4);
+            "91";
+            self.vel_vec = vec(0, 0, 1);
+        }
+        "93";
+        self.body = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos, size: size, color: cor})]);
+        "94";
+        self.cabin = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 1, 0)), size: size["*"](.6), color: color.black})]);
+        "95";
+        self.speed = random.random()["*"](10)["+"](10)["*"](direcao);
+        "97";
+        self.farois = ρσ_list_decorate([]);
+        "98";
+        var ρσ_Iter6 = ρσ_list_decorate([ 1["-u"]()["*"](1), 1 ]);
+        ρσ_Iter6 = ((typeof ρσ_Iter6[Symbol.iterator] === "function") ? (ρσ_Iter6 instanceof Map ? ρσ_Iter6.keys() : ρσ_Iter6) : Object.keys(ρσ_Iter6));
+        for (var ρσ_Index6 of ρσ_Iter6) {
+            i = ρσ_Index6;
+            "100";
+            f_local_offset = vec(6, 0, i["*"](.5));
+            "101";
+            if (ρσ_equals(direcao, 1["-u"]()["*"](1))) {
+                f_local_offset = vec(1["-u"]()["*"](6), 0, i["*"](.5));
+            }
+            "103";
+            dir_luz = self.vel_vec["*"](1["-u"]())["*"](direcao);
+            "104";
+            luz = ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: pos["+"](f_local_offset), axis: dir_luz["*"](6), radius: 1.5, color: color.yellow, opacity: .3, visible: false})]);
+            "105";
+            self.farois.append((function(){
+                var ρσ_d = ρσ_dict();
+                ρσ_d.set("obj", luz);
+                ρσ_d.set("local_offset", f_local_offset);
+                return ρσ_d;
+            }).call(this));
+        }
+    };
+    if (!Carro.prototype.__init__.__defaults__) Object.defineProperties(Carro.prototype.__init__, {
+        __defaults__ : {value: {z_base:0}},
+        __handles_kwarg_interpolation__ : {value: true},
+        __argnames__ : {value: ["eixo", "direcao", "z_base"]},
+        __module__ : {value: null}
+    });
+    Carro.__argnames__ = Carro.prototype.__init__.__argnames__;
+    Carro.__handles_kwarg_interpolation__ = Carro.prototype.__init__.__handles_kwarg_interpolation__;
+    Carro.prototype.mover = async function mover(dt, escuro) {
+        var self = this;
+        var ρσ_ls, delta, f, limite;
+        "108";
+        delta = vec(0, 0, 0);
+        "109";
+        if ((self.eixo === "x" || typeof self.eixo === "object" && ρσ_equals(self.eixo, "x"))) {
+            delta = vec(self.speed["*"](dt), 0, 0);
+        } else {
+            delta = vec(0, 0, self.speed["*"](dt));
+        }
+        "112";
+        self.body.pos=self.body.pos["+"](delta);
+        "113";
+        self.cabin.pos=self.cabin.pos["+"](delta);
+        "115";
+        var ρσ_Iter7 = self.farois;
+        ρσ_Iter7 = ((typeof ρσ_Iter7[Symbol.iterator] === "function") ? (ρσ_Iter7 instanceof Map ? ρσ_Iter7.keys() : ρσ_Iter7) : Object.keys(ρσ_Iter7));
+        for (var ρσ_Index7 of ρσ_Iter7) {
+            f = ρσ_Index7;
+            "116";
+            ρσ_getitem(f, "obj").pos = self.body.pos["+"](ρσ_getitem(f, "local_offset"));
+            "118";
+            if (!f.get("is_brake")) {
+                "119";
+                ρσ_getitem(f, "obj").visible = escuro;
+            }
+        }
+        "121";
+        limite = 100;
+        "122";
+        if ((self.eixo === "x" || typeof self.eixo === "object" && ρσ_equals(self.eixo, "x"))) {
+            "123";
+            if (abs(self.body.pos.x)[">"](limite)) {
+                "125";
+                self.body.pos.x = ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1))) ? 1["-u"]()["*"](limite) : limite;
+                "126";
+                self.cabin.pos.x = ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1))) ? 1["-u"]()["*"](limite) : limite;
+            }
+        }
+    };
+    if (!Carro.prototype.mover.__argnames__) Object.defineProperties(Carro.prototype.mover, {
+        __argnames__ : {value: ["dt", "escuro"]},
+        __module__ : {value: null}
+    });
+    Carro.prototype.__repr__ = async function __repr__() {
+                return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+    };
+    Carro.prototype.__str__ = async function __str__() {
+        return this.__repr__();
+    };
+    Object.defineProperty(Carro.prototype, "__bases__", {value: []});
+    
+    
+
+    "130";
+    function TremMetro() {;
+    }
+    TremMetro.prototype.__init__ = async function __init__(z_linha, direcao) {
+        var self = this;
+        var ρσ_ls, pos_x, cor_trem, offset_x, v, faixa, janelas, win, j, i, frente_x;
+        "132";
+        self.z_linha = z_linha;
+        "133";
+        self.velocidade = 50;
+        "134";
+        self.direcao = direcao;
+        "137";
+        pos_x = ((direcao === 1 || typeof direcao === "object" && ρσ_equals(direcao, 1))) ? 1["-u"]()["*"](90) : 90;
+        "138";
+        self.posicao = vec(pos_x, 1.5, z_linha);
+        "140";
+        self.vagoes = ρσ_list_decorate([]);
+        "141";
+        cor_trem = vec(.8, .8, .9);
+        "143";
+        for (var ρσ_Index8 = 0; ρσ_Index8["<"](3); ρσ_Index8++) {
+            i = ρσ_Index8;
+            "144";
+            offset_x = i["*"](1["-u"]())["*"](14)["*"](direcao);
+            "146";
+            v = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x), 1.8, z_linha), size: vec(12, 3, 3.2), color: cor_trem})]);
+            "147";
+            faixa = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x), 1.8, z_linha), size: vec(12.1, .5, 3.3), color: color.blue})]);
+            "149";
+            janelas = ρσ_list_decorate([]);
+            "150";
+            for (var ρσ_Index9 = 1["-u"]()["*"](4); ρσ_Index9["<"](5); ρσ_Index9=ρσ_Index9["+"](2)) {
+                j = ρσ_Index9;
+                "151";
+                win = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x)["+"](j), 2.2, z_linha), size: vec(1.5, 1, 3.4), color: color.black})]);
+                "152";
+                janelas.append(win);
+            }
+            "154";
+            self.vagoes.append((function(){
+                var ρσ_d = ρσ_dict();
+                ρσ_d.set("corpo", v);
+                ρσ_d.set("faixa", faixa);
+                ρσ_d.set("janelas", janelas);
+                ρσ_d.set("offset_inicial", offset_x);
+                return ρσ_d;
+            }).call(this));
+        }
+        "157";
+        frente_x = 6["*"](direcao);
+        "158";
+        self.farol = ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](frente_x), 1.5, z_linha), axis: vec(10["*"](1["-u"]())["*"](direcao), 1["-u"]()["*"](2), 0), radius: 3, color: color.white, opacity: .3, visible: false})]);
+    };
+    if (!TremMetro.prototype.__init__.__argnames__) Object.defineProperties(TremMetro.prototype.__init__, {
+        __argnames__ : {value: ["z_linha", "direcao"]},
+        __module__ : {value: null}
+    });
+    TremMetro.__argnames__ = TremMetro.prototype.__init__.__argnames__;
+    TremMetro.__handles_kwarg_interpolation__ = TremMetro.prototype.__init__.__handles_kwarg_interpolation__;
+    TremMetro.prototype.mover = async function mover(dt, escuro) {
+        var self = this;
+        var ρσ_ls, deslocamento, base_janela_x, win, vagao, frente_x;
+        "161";
+        deslocamento = self.velocidade["*"](dt)["*"](self.direcao);
+        "162";
+        self.posicao.x=self.posicao.x["+"](deslocamento);
+        "165";
+        var ρσ_Iter10 = self.vagoes;
+        ρσ_Iter10 = ((typeof ρσ_Iter10[Symbol.iterator] === "function") ? (ρσ_Iter10 instanceof Map ? ρσ_Iter10.keys() : ρσ_Iter10) : Object.keys(ρσ_Iter10));
+        for (var ρσ_Index10 of ρσ_Iter10) {
+            vagao = ρσ_Index10;
+            "166";
+            ρσ_getitem(vagao, "corpo").pos.x = self.posicao.x["+"](ρσ_getitem(vagao, "offset_inicial"));
+            "167";
+            ρσ_getitem(vagao, "faixa").pos.x = self.posicao.x["+"](ρσ_getitem(vagao, "offset_inicial"));
+            "169";
+            base_janela_x = 1["-u"]()["*"](4);
+            "170";
+            var ρσ_Iter11 = ρσ_getitem(vagao, "janelas");
+            ρσ_Iter11 = ((typeof ρσ_Iter11[Symbol.iterator] === "function") ? (ρσ_Iter11 instanceof Map ? ρσ_Iter11.keys() : ρσ_Iter11) : Object.keys(ρσ_Iter11));
+            for (var ρσ_Index11 of ρσ_Iter11) {
+                win = ρσ_Index11;
+                "171";
+                win.pos.x = ρσ_getitem(vagao, "corpo").pos.x["+"](base_janela_x);
+                "172";
+                base_janela_x=base_janela_x["+"](2);
+            }
+        }
+        "174";
+        frente_x = 13["*"](self.direcao);
+        "175";
+        self.farol.pos = vec(self.posicao.x["+"](frente_x), 1.5, self.z_linha);
+        "176";
+        self.farol.visible = escuro;
+        "179";
+        if ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1)) && self.posicao.x[">"](130)) {
+            "180";
+            self.posicao.x = 1["-u"]()["*"](130);
+            "181";
+        } else if (ρσ_equals(self.direcao, 1["-u"]()["*"](1)) && self.posicao.x["<"](1["-u"]()["*"](130))) {
+            "182";
+            self.posicao.x = 130;
+        }
+    };
+    if (!TremMetro.prototype.mover.__argnames__) Object.defineProperties(TremMetro.prototype.mover, {
+        __argnames__ : {value: ["dt", "escuro"]},
+        __module__ : {value: null}
+    });
+    TremMetro.prototype.__repr__ = async function __repr__() {
+                return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+    };
+    TremMetro.prototype.__str__ = async function __str__() {
+        return this.__repr__();
+    };
+    Object.defineProperty(TremMetro.prototype, "__bases__", {value: []});
+    
+    
+
+    "186";
+    function Cidade() {;
+    }
+    Cidade.prototype.__init__ = async function __init__() {
+        var self = this;
+        var ρσ_ls, x;
+        "189";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, 1["-u"]()["*"](.5), 1["-u"]()["*"](20)), size: vec(260, 1, 200), texture: textura_grama})]);
+        "193";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, 0), size: vec(260, .1, 14), color: vec(.2, .2, .2)})]);
+        "196";
+        self.z_avenida2 = 1["-u"]()["*"](24);
+        "197";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida2), size: vec(260, .1, 14), color: vec(.2, .2, .2)})]);
+        "201";
+        self.z_avenida3 = 1["-u"]()["*"](62);
+        "202";
+        self.z_avenida4 = 1["-u"]()["*"](82);
+        "205";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida3), size: vec(260, .1, 12), color: vec(.2, .2, .2)})]);
+        "206";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida4), size: vec(260, .1, 12), color: vec(.2, .2, .2)})]);
+        "209";
+        for (var ρσ_Index12 = 1["-u"]()["*"](130); ρσ_Index12["<"](130); ρσ_Index12=ρσ_Index12["+"](10)) {
+            x = ρσ_Index12;
+            "210";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, 0), size: vec(5, .01, .4), color: color.white})]);
+            "211";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida2), size: vec(5, .01, .4), color: color.white})]);
+            "213";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida3), size: vec(5, .01, .4), color: color.white})]);
+            "214";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida4), size: vec(5, .01, .4), color: color.white})]);
+        }
+        "216";
+        self.postes = ρσ_list_decorate([]);
+        "217";
+        self.predios = ρσ_list_decorate([]);
+        "218";
+        self.escola_pos = vec(0, 0, 22);
+        "221";
+        self.z_metro1 = 1["-u"]()["*"](36);
+        "222";
+        self.z_metro2 = 1["-u"]()["*"](42);
+        "224";
+        (await self.construir_luzes());
+        "225";
+        (await self.add_linhas_metro());
+        "226";
+        (await self.add_escola());
+        "227";
+        (await self.add_circo());
+        "228";
+        (await self.add_estacionamento());
+        "229";
+        (await self.add_bosque());
+        "230";
+        (await self.add_vegetacao_canteiros());
+    };
+    if (!Cidade.prototype.__init__.__module__) Object.defineProperties(Cidade.prototype.__init__, {
+        __module__ : {value: null}
+    });
+    Cidade.__argnames__ = Cidade.prototype.__init__.__argnames__;
+    Cidade.__handles_kwarg_interpolation__ = Cidade.prototype.__init__.__handles_kwarg_interpolation__;
+    Cidade.prototype.construir_luzes = async function construir_luzes() {
+        var self = this;
+        var ρσ_ls, i;
+        "234";
+        for (var ρσ_Index13 = 1["-u"]()["*"](80); ρσ_Index13["<"](81); ρσ_Index13=ρσ_Index13["+"](25)) {
+            i = ρσ_Index13;
+            "236";
+            (await self.add_poste(i, 9));
+            "237";
+            (await self.add_poste(i, self.z_avenida2["-"](1["*"](9))));
+            "240";
+            (await self.add_poste(i, self.z_avenida3["+"](7)));
+            "241";
+            (await self.add_poste(i, self.z_avenida4["-"](1["*"](7))));
+        }
+    };
+    if (!Cidade.prototype.construir_luzes.__module__) Object.defineProperties(Cidade.prototype.construir_luzes, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_vegetacao_canteiros = async function add_vegetacao_canteiros() {
+        var self = this;
+        var ρσ_ls, zonas_canteiros, offset_x, offset_z, raio, cor, x, z_base;
+        "246";
+        zonas_canteiros = ρσ_list_decorate([ 1["-u"]()["*"](12), 1["-u"]()["*"](72) ]);
+        "248";
+        var ρσ_Iter14 = zonas_canteiros;
+        ρσ_Iter14 = ((typeof ρσ_Iter14[Symbol.iterator] === "function") ? (ρσ_Iter14 instanceof Map ? ρσ_Iter14.keys() : ρσ_Iter14) : Object.keys(ρσ_Iter14));
+        for (var ρσ_Index14 of ρσ_Iter14) {
+            z_base = ρσ_Index14;
+            "249";
+            for (var ρσ_Index15 = 1["-u"]()["*"](125); ρσ_Index15["<"](125); ρσ_Index15=ρσ_Index15["+"](3)) {
+                x = ρσ_Index15;
+                "251";
+                if (random.random()[">"](.4)) {
+                    "252";
+                    offset_x = random.uniform(1["-u"]()["*"](1), 1);
+                    "253";
+                    offset_z = random.uniform(1["-u"]()["*"](1.5), 1.5);
+                    "256";
+                    if (random.random()["<"](.15)) {
+                        "257";
+                        (await self.add_arvore(x["+"](offset_x), z_base["+"](offset_z)));
+                        "258";
+                    } else {
+                        "259";
+                        raio = random.uniform(.4, .9);
+                        "260";
+                        cor = vec(0, random.uniform(.3, .6), 0);
+                        "261";
+                        ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(x["+"](offset_x), raio["/"](2), z_base["+"](offset_z)), radius: raio, color: cor})]);
+                    }
+                }
+            }
+        }
+    };
+    if (!Cidade.prototype.add_vegetacao_canteiros.__module__) Object.defineProperties(Cidade.prototype.add_vegetacao_canteiros, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_linhas_metro = async function add_linhas_metro() {
+        var self = this;
+        var ρσ_ls, z_centro_metro, largura_base, x;
+        "265";
+        z_centro_metro = self.z_metro1["+"](self.z_metro2)["/"](2);
+        "266";
+        largura_base = abs(self.z_metro1["-"](1["*"](self.z_metro2)))["+"](6);
+        "267";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .1, z_centro_metro), size: vec(260, .2, largura_base), color: vec(.4, .4, .4)})]);
+        "270";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro1["-"](1["*"](1.5))), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
+        "271";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro1["+"](1.5)), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
+        "272";
+        for (var ρσ_Index16 = 1["-u"]()["*"](130); ρσ_Index16["<"](130); ρσ_Index16=ρσ_Index16["+"](2)) {
+            x = ρσ_Index16;
+            "273";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .2, self.z_metro1), size: vec(1, .15, 4), color: vec(.3, .2, .1)})]);
+        }
+        "276";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro2["-"](1["*"](1.5))), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
+        "277";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro2["+"](1.5)), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
+        "278";
+        for (var ρσ_Index17 = 1["-u"]()["*"](130); ρσ_Index17["<"](130); ρσ_Index17=ρσ_Index17["+"](2)) {
+            x = ρσ_Index17;
+            "279";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .2, self.z_metro2), size: vec(1, .15, 4), color: vec(.3, .2, .1)})]);
+        }
+        "282";
+        for (var ρσ_Index18 = 1["-u"]()["*"](80); ρσ_Index18["<"](81); ρσ_Index18=ρσ_Index18["+"](40)) {
+            x = ρσ_Index18;
+            "283";
+            ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z_centro_metro), axis: vec(0, 8, 0), radius: .3, color: color.gray(.3)})]);
+            "284";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, 8, z_centro_metro), size: vec(.2, .2, 10), color: color.gray(.3)})]);
+        }
+    };
+    if (!Cidade.prototype.add_linhas_metro.__module__) Object.defineProperties(Cidade.prototype.add_linhas_metro, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_escola = async function add_escola() {
+        var self = this;
+        var ρσ_ls, ρσ_unpack, x, z, comp, larg, h, offset_x, w_x, j, i;
+        "287";
+        ρσ_unpack = [self.escola_pos.x, self.escola_pos.z];
+        x = ρσ_unpack[0];
+        z = ρσ_unpack[1];
+        "288";
+        ρσ_unpack = [40, 20, 12];
+        comp = ρσ_unpack[0];
+        larg = ρσ_unpack[1];
+        h = ρσ_unpack[2];
+        "292";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["/"](2), z), size: vec(comp, h, larg), color: color.white})]);
+        "295";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["+"](.5), z), size: vec(comp["+"](1), 1, larg["+"](1)), color: vec(.2, .2, .2)})]);
+        "299";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["/"](2)["-"](1["*"](1)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.1))), size: vec(8, h["-"](1["*"](2)), .2), color: vec(.7, .8, 1), opacity: .6})]);
+        "302";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["-"](1["*"](3)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](1.5))), size: vec(10, .5, 3), color: vec(.3, .3, .3)})]);
+        "306";
+        for (var ρσ_Index19 = 0; ρσ_Index19["<"](2); ρσ_Index19++) {
+            i = ρσ_Index19;
+            "307";
+            offset_x = ((i === 0 || typeof i === "object" && ρσ_equals(i, 0))) ? 12 : 1["-u"]()["*"](12);
+            "309";
+            for (var ρσ_Index20 = 0; ρσ_Index20["<"](4); ρσ_Index20++) {
+                j = ρσ_Index20;
+                "310";
+                w_x = x["+"](offset_x)["+"](j["-"](1["*"](1.5))["*"](2.5));
+                "311";
+                ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(w_x, h["/"](2), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.1))), size: vec(1.5, h["-"](1["*"](2)), .2), color: vec(.7, .8, 1), opacity: .6})]);
+            }
+        }
+        "315";
+        ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, h["-"](1["*"](2)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.2))), axis: vec(0, 0, .1), radius: 1.5, color: color.white})]);
+        "318";
+        ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(x, h["-"](1["*"](4.5)), z["-"](1["*"](larg)["/"](2))), text: "ESCOLA VILLA", height: 15, border: 4, color: color.white, box: false, opacity: 0})]);
+    };
+    if (!Cidade.prototype.add_escola.__module__) Object.defineProperties(Cidade.prototype.add_escola, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_circo = async function add_circo() {
+        var self = this;
+        var ρσ_ls, pos, ρσ_unpack, r_base, h_base, angle, x, z, cor, angle_deg;
+        "321";
+        pos = self.escola_pos["+"](vec(1["-u"]()["*"](35), 0, 0));
+        "322";
+        ρσ_unpack = [8, 6];
+        r_base = ρσ_unpack[0];
+        h_base = ρσ_unpack[1];
+        "323";
+        for (var ρσ_Index21 = 0; ρσ_Index21["<"](360); ρσ_Index21=ρσ_Index21["+"](15)) {
+            angle_deg = ρσ_Index21;
+            "324";
+            angle = (await radians(angle_deg));
+            "325";
+            ρσ_unpack = [r_base["*"](cos(angle)), r_base["*"](sin(angle))];
+            x = ρσ_unpack[0];
+            z = ρσ_unpack[1];
+            "326";
+            cor = (ρσ_equals(angle_deg["%"](30), 0)) ? color.red : color.white;
+            "327";
+            ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pos["+"](vec(x, 0, z)), axis: vec(0, h_base, 0), radius: 1.3, color: cor})]);
+        }
+        "328";
+        ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, h_base, 0)), axis: vec(0, 8, 0), radius: r_base["+"](2), color: color.red})]);
+        "329";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 2, 1["-u"]()["*"](r_base))), size: vec(4, 4, 2), color: color.black})]);
+        "330";
+        ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, h_base["+"](2), 1["-u"]()["*"](r_base)["-"](1["*"](1)))), text: "CIRCO", height: 12, border: 2, color: color.yellow, box: false, opacity: 0})]);
+    };
+    if (!Cidade.prototype.add_circo.__module__) Object.defineProperties(Cidade.prototype.add_circo, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_estacionamento = async function add_estacionamento() {
+        var self = this;
+        var ρσ_ls, pos, largura_est, profundidade_est, start_x, x_slot, cor_c, i;
+        "333";
+        pos = self.escola_pos["+"](vec(35, .05, 0));
+        "334";
+        largura_est = 30;
+        "335";
+        profundidade_est = 20;
+        "336";
+        ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos, size: vec(largura_est, .1, profundidade_est), color: vec(.3, .3, .35)})]);
+        "337";
+        ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 0, 1["-u"]()["*"](profundidade_est)["/"](2))), axis: vec(0, 5, 0), radius: .2, color: color.gray(.5)})]);
+        "338";
+        ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 5.5, 1["-u"]()["*"](profundidade_est)["/"](2))), text: "ESTACIONAMENTO", height: 10, box: true, opacity: .5})]);
+        "340";
+        start_x = pos.x["-"](1["*"](largura_est)["/"](2))["+"](4);
+        "341";
+        for (var ρσ_Index22 = 0; ρσ_Index22["<"](5); ρσ_Index22++) {
+            i = ρσ_Index22;
+            "342";
+            x_slot = start_x["+"](i["*"](5.5));
+            "343";
+            ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot["-"](1["*"](2.75)), .1, pos.z), size: vec(.2, .12, profundidade_est["-"](1["*"](2))), color: color.white})]);
+            "344";
+            if (random.random()[">"](.3)) {
+                "345";
+                cor_c = vec(random.random(), random.random(), random.random());
+                "346";
+                ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot, 1, pos.z), size: vec(3, 1.5, 4), color: cor_c})]);
+                "347";
+                ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot, 1.8, pos.z), size: vec(2.5, .8, 2.5), color: color.black})]);
+            }
+        }
+    };
+    if (!Cidade.prototype.add_estacionamento.__module__) Object.defineProperties(Cidade.prototype.add_estacionamento, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_bosque = async function add_bosque() {
+        var self = this;
+        var ρσ_ls, x, z, _;
+        "351";
+        for (var ρσ_Index23 = 0; ρσ_Index23["<"](200); ρσ_Index23++) {
+            _ = ρσ_Index23;
+            "352";
+            x = random.uniform(1["-u"]()["*"](130), 130);
+            "353";
+            z = random.uniform(35, 75);
+            "354";
+            (await self.add_arvore(x, z));
+        }
+        "357";
+        for (var ρσ_Index24 = 0; ρσ_Index24["<"](150); ρσ_Index24++) {
+            _ = ρσ_Index24;
+            "358";
+            x = random.uniform(1["-u"]()["*"](130), 130);
+            "359";
+            z = random.uniform(1["-u"]()["*"](115), 1["-u"]()["*"](90));
+            "360";
+            (await self.add_arvore(x, z));
+        }
+    };
+    if (!Cidade.prototype.add_bosque.__module__) Object.defineProperties(Cidade.prototype.add_bosque, {
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_arvore = async function add_arvore(x, z) {
+        var self = this;
+        var ρσ_ls, h_copa, r_copa, cor_verde;
+        "363";
+        ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z), axis: vec(0, 2.5, 0), radius: .5, texture: (function(){
+            var ρσ_d = ρσ_dict();
+            ρσ_d.set("file", textura_tronco);
+            ρσ_d.set("rotate", pi["/"](2));
+            return ρσ_d;
+        }).call(this)})]);
+        "364";
+        h_copa = 4["+"](random.uniform(0, 2));
+        "365";
+        r_copa = 2["+"](random.uniform(0, 1));
+        "366";
+        cor_verde = vec(0, .5["+"](random.uniform(0, .3)), 0);
+        "367";
+        ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: vec(x, 2.5, z), axis: vec(0, h_copa, 0), radius: r_copa, texture: textura_folhas, texscale: vec(3, 3, 0)})]);
+    };
+    if (!Cidade.prototype.add_arvore.__argnames__) Object.defineProperties(Cidade.prototype.add_arvore, {
+        __argnames__ : {value: ["x", "z"]},
+        __module__ : {value: null}
+    });
+    Cidade.prototype.add_poste = async function add_poste(x, z) {
+        var self = this;
+        var ρσ_ls, luz;
+        "371";
+        ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z), axis: vec(0, 7, 0), radius: .3, color: color.gray(.4)})]);
+        "372";
+        luz = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(x, 7, z), radius: .6, color: color.white, emissive: false})]);
+        "373";
+        self.postes.append(luz);
+    };
+    if (!Cidade.prototype.add_poste.__argnames__) Object.defineProperties(Cidade.prototype.add_poste, {
+        __argnames__ : {value: ["x", "z"]},
+        __module__ : {value: null}
+    });
+    Cidade.prototype.gerenciar_luzes = async function gerenciar_luzes(escuro) {
+        var self = this;
+        var ρσ_ls, cor_poste, emissao, p;
+        "376";
+        cor_poste = (escuro) ? color.yellow : color.black;
+        "377";
+        emissao = (escuro) ? true : false;
+        "378";
+        var ρσ_Iter25 = self.postes;
+        ρσ_Iter25 = ((typeof ρσ_Iter25[Symbol.iterator] === "function") ? (ρσ_Iter25 instanceof Map ? ρσ_Iter25.keys() : ρσ_Iter25) : Object.keys(ρσ_Iter25));
+        for (var ρσ_Index25 of ρσ_Iter25) {
+            p = ρσ_Index25;
+            "379";
+            p.color = cor_poste;
+            "380";
+            p.emissive = emissao;
+        }
+    };
+    if (!Cidade.prototype.gerenciar_luzes.__argnames__) Object.defineProperties(Cidade.prototype.gerenciar_luzes, {
+        __argnames__ : {value: ["escuro"]},
+        __module__ : {value: null}
+    });
+    Cidade.prototype.__repr__ = async function __repr__() {
+                return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+    };
+    Cidade.prototype.__str__ = async function __str__() {
+        return this.__repr__();
+    };
+    Object.defineProperty(Cidade.prototype, "__bases__", {value: []});
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    "384";
+    function Estacao() {;
+    }
+    Estacao.prototype.__init__ = async function __init__(sol_obj) {
+        var self = this;
+        "386";
+        self.sol = sol_obj;
+        "387";
+        self.pressao = 1013;
+        "388";
+        self.temperatura = 27;
+        "389";
+        self.tempo = 0;
+        "390";
+        self.chuva_ativa = false;
+        "391";
+        self.gotas = ρσ_list_decorate([]);
+        "392";
+        self.base = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(18, 8, 18), size: vec(3, 3, 3), color: color.white})]);
+        "393";
+        self.label = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(18, 11, 18), text: "Init", height: 10, border: 2})]);
+    };
+    if (!Estacao.prototype.__init__.__argnames__) Object.defineProperties(Estacao.prototype.__init__, {
+        __argnames__ : {value: ["sol_obj"]},
+        __module__ : {value: null}
+    });
+    Estacao.__argnames__ = Estacao.prototype.__init__.__argnames__;
+    Estacao.__handles_kwarg_interpolation__ = Estacao.prototype.__init__.__handles_kwarg_interpolation__;
+    Estacao.prototype.atualizar = async function atualizar(dt) {
+        var self = this;
+        var ρσ_ls, threshold_chuva, temp_alvo, norm_t, status;
+        "396";
+        self.tempo=self.tempo["+"](dt);
+        "397";
+        threshold_chuva = 995;
+        "398";
+        self.chuva_ativa = self.pressao["<"](threshold_chuva);
+        "399";
+        if (self.chuva_ativa) {
+            (await self.gerar_chuva());
+        } else {
+            (await self.limpar_chuva());
+        }
+        "402";
+        temp_alvo = 23["+"]((self.sol.fator_iluminacao[">"](0)) ? self.sol.fator_iluminacao["*"](8) : 0);
+        "403";
+        if (self.chuva_ativa) {
+            temp_alvo=temp_alvo["-"](2);
+        }
+        "404";
+        self.temperatura=self.temperatura["+"](temp_alvo["-"](1["*"](self.temperatura))["*"](.05));
+        "406";
+        norm_t = max(0, min(1, self.temperatura["-"](1["*"](21))["/"](10)));
+        "407";
+        self.base.color = vec(norm_t, 0, 1["-"](1["*"](norm_t)));
+        "408";
+        status = (self.chuva_ativa) ? "CHUVA" : "SECO";
+        "409";
+        self.label.text = "T: "["+"](ρσ_str.format("{:.1f}", self.temperatura))["+"]("C\nP: ")["+"](ρσ_str.format("{:.0f}", self.pressao))["+"]("hPa\n")["+"](ρσ_str.format("{}", status))["+"]("");
+        "411";
+        plot_temp.plot(self.tempo, self.temperatura);
+        "412";
+        plot_press.plot(self.tempo, self.pressao["-"](1["*"](950))["/"](5)["+"](20));
+        "413";
+        plot_sol.plot(self.tempo, 20["+"](self.sol.fator_iluminacao["*"](10)));
+    };
+    if (!Estacao.prototype.atualizar.__argnames__) Object.defineProperties(Estacao.prototype.atualizar, {
+        __argnames__ : {value: ["dt"]},
+        __module__ : {value: null}
+    });
+    Estacao.prototype.gerar_chuva = async function gerar_chuva() {
+        var self = this;
+        var ρσ_ls, g;
+        "416";
+        if (len(self.gotas)["<"](150)) {
+            "417";
+            g = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(random.random()["*"](100)["-"](1["*"](50)), 40["+"](random.random()["*"](10)), random.random()["*"](100)["-"](1["*"](50))), radius: .2, color: vec(.6, .6, 1), emissive: true})]);
+            "419";
+            g.v = vec(0, 1["-u"]()["*"](35), 0);
+            "420";
+            self.gotas.append(g);
+        }
+        "421";
+        var ρσ_Iter26 = self.gotas;
+        ρσ_Iter26 = ((typeof ρσ_Iter26[Symbol.iterator] === "function") ? (ρσ_Iter26 instanceof Map ? ρσ_Iter26.keys() : ρσ_Iter26) : Object.keys(ρσ_Iter26));
+        for (var ρσ_Index26 of ρσ_Iter26) {
+            g = ρσ_Index26;
+            "422";
+            g.pos=g.pos["+"](g.v["*"](.05));
+            "423";
+            if (g.pos.y["<"](0)) {
+                g.pos.y = 40["+"](random.random()["*"](10));
+            }
+            "424";
+            g.visible = true;
+        }
+    };
+    if (!Estacao.prototype.gerar_chuva.__module__) Object.defineProperties(Estacao.prototype.gerar_chuva, {
+        __module__ : {value: null}
+    });
+    Estacao.prototype.limpar_chuva = async function limpar_chuva() {
+        var self = this;
+        var ρσ_ls, g;
+        "427";
+        var ρσ_Iter27 = self.gotas;
+        ρσ_Iter27 = ((typeof ρσ_Iter27[Symbol.iterator] === "function") ? (ρσ_Iter27 instanceof Map ? ρσ_Iter27.keys() : ρσ_Iter27) : Object.keys(ρσ_Iter27));
+        for (var ρσ_Index27 of ρσ_Iter27) {
+            g = ρσ_Index27;
+            g.visible = false;
+        }
+    };
+    if (!Estacao.prototype.limpar_chuva.__module__) Object.defineProperties(Estacao.prototype.limpar_chuva, {
+        __module__ : {value: null}
+    });
+    Estacao.prototype.__repr__ = async function __repr__() {
+                return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+    };
+    Estacao.prototype.__str__ = async function __str__() {
+        return this.__repr__();
+    };
+    Object.defineProperty(Estacao.prototype, "__bases__", {value: []});
+    
+    
+    
+    
+
+    "431";
+    _GS_1 = new CicloSolar;
+    (await _GS_1.__init__());
+    sol = _GS_1;
+    "432";
+    _GS_1 = new Cidade;
+    (await _GS_1.__init__());
+    cidade = _GS_1;
+    "433";
+    _GS_1 = new Estacao;
+    (await _GS_1.__init__(sol));
+    estacao = _GS_1;
+    "436";
+    _GS_1 = new TremMetro;
+    (await _GS_1.__init__(cidade.z_metro1, 1));
+    metro1 = _GS_1;
+    "437";
+    _GS_1 = new TremMetro;
+    (await _GS_1.__init__(cidade.z_metro2, 1["-u"]()["*"](1)));
+    metro2 = _GS_1;
+    "440";
+    carros = ρσ_list_decorate([]);
+    "444";
+    _GS_1 = new Carro;
+    ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 0})]));
+    for (var ρσ_Index28 = 0; ρσ_Index28["<"](7); ρσ_Index28++) {
+        _ = ρσ_Index28;
+        carros.append(_GS_1);
+    }
+    "446";
+    _GS_1 = new Carro;
+    ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 1["-u"]()["*"](24)})]));
+    for (var ρσ_Index29 = 0; ρσ_Index29["<"](7); ρσ_Index29++) {
+        _ = ρσ_Index29;
+        carros.append(_GS_1);
+    }
+    "450";
+    _GS_1 = new Carro;
+    ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida3})]));
+    for (var ρσ_Index30 = 0; ρσ_Index30["<"](7); ρσ_Index30++) {
+        _ = ρσ_Index30;
+        carros.append(_GS_1);
+    }
+    "452";
+    _GS_1 = new Carro;
+    ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida4})]));
+    for (var ρσ_Index31 = 0; ρσ_Index31["<"](7); ρσ_Index31++) {
+        _ = ρσ_Index31;
+        carros.append(_GS_1);
+    }
+    "455";
+    async function muda_pressao(s) {
+        "456";
+        estacao.pressao = s.value;
+        "457";
+        wt_p.text = ""["+"](ρσ_str.format("{:.0f}", s.value))["+"](" hPa");
+    };
+    if (!muda_pressao.__argnames__) Object.defineProperties(muda_pressao, {
+        __argnames__ : {value: ["s"]},
+        __module__ : {value: null}
+    });
+
+    "459";
+    scene.append_to_caption("\n<b>CONTROLE CLIMÁTICO<\/b>\n");
+    "460";
+    scene.append_to_caption("Pressão (<995 inicia tempestade): ");
+    "461";
+    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 980, max: 1040, value: 1013, length: 250, bind: muda_pressao})]);
+    "462";
+    wt_p = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: "1013 hPa"})]);
+    "465";
+    dt = .05;
+    "466";
+    estado_anterior_escuro = false;
+    "468";
+    while (true) {
+        "469";
+        (await rate(30));
+        "470";
+        esta_escuro = !(sol.eh_dia) || estacao.chuva_ativa;
+        "472";
+        (await sol.atualizar(dt, estacao.chuva_ativa));
+        "473";
+        (await estacao.atualizar(dt));
+        "475";
+        if ((esta_escuro !== estado_anterior_escuro && (typeof esta_escuro !== "object" || ρσ_not_equals(esta_escuro, estado_anterior_escuro)))) {
+            "476";
+            (await cidade.gerenciar_luzes(esta_escuro));
+            "486";
+            estado_anterior_escuro = esta_escuro;
+        }
+        "488";
+        var ρσ_Iter32 = carros;
+        ρσ_Iter32 = ((typeof ρσ_Iter32[Symbol.iterator] === "function") ? (ρσ_Iter32 instanceof Map ? ρσ_Iter32.keys() : ρσ_Iter32) : Object.keys(ρσ_Iter32));
+        for (var ρσ_Index32 of ρσ_Iter32) {
+            c = ρσ_Index32;
+            "489";
+            (await c.mover(dt, esta_escuro));
+        }
+        "491";
+        (await metro1.mover(dt, esta_escuro));
+        "492";
+        (await metro2.mover(dt, esta_escuro));
+    }
+};
+if (!__main__.__module__) Object.defineProperties(__main__, {
+    __module__ : {value: null}
+});
+
+;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+// END JAVASCRIPT
+
+//--><!]]></script>
+</div>
+</script>
+</div>
+    </script>
+</body>
+</html>
