@@ -18,7 +18,8 @@ header{
 h1{
     color:blanchedalmond;
     font-family: "Marcellus", serif;
-    margin:1%;
+    font-size:25px;
+    margin:0.7%;
 }
 h3{
     color:azure;
@@ -36,10 +37,9 @@ h3{
 
 #temperatura_pressao{
     display: flex;
-    padding:1%;
+    
     align-items: center;
     justify-content: center;
-    background-color: #00124B;
 }
 
 @media (max-width: 500px) {
