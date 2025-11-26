@@ -23,6 +23,7 @@
     <script>
         ;(function() {;
 var ρσ_modules = {};
+var largura_ant, altura_ant;
 ρσ_modules.pythonize = {};
 ρσ_modules.random = {};
 
@@ -267,7 +268,7 @@ async function __main__() {
 
     function round(num, n=0) {return Number(num.toFixed(n))}
 
-    var version, print, arange, __name__, type, ρσ_ls, textura_grama, textura_grama2, textura_folhas, textura_tronco, textura_escola, g_display, plot_temp, plot_press, plot_sol, _GS_1, sol, cidade, estacao, metro1, metro2, carros, _, dt, estado_anterior_escuro, esta_escuro, c;
+    var version, print, arange, __name__, type, ρσ_ls, textura_grama, textura_grama2, textura_folhas, textura_tronco, textura_escola, g_display, plot_temp, plot_press, plot_sol, largura_ant, altura_ant, _GS_1, sol, cidade, estacao, metro1, metro2, carros, _, dt, estado_anterior_escuro, esta_escuro, c;
     version = ρσ_list_decorate([ "3.2", "glowscript" ]);
     Array.prototype['+'] = function(r) {return this.concat(r)}
     Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
@@ -284,7 +285,7 @@ async function __main__() {
     "6";
     scene.width = window.innerWidth["*"](.96);
     "7";
-    scene.height = window.innerHeight["*"](.5);
+    scene.height = window.innerHeight["*"](.45);
     "8";
     scene.center = vec(5, 0, 1["-u"]()["*"](30));
     "9";
@@ -293,57 +294,91 @@ async function __main__() {
     scene.camera.axis = vec(1["-u"]()["*"](60), 1["-u"]()["*"](90), 1["-u"]()["*"](110));
     "11";
     scene.background = color.black;
-    "15";
+    "14";
     textura_grama = "https://i.ibb.co/QvGNk2Nt/Chat-GPT-Image-25-de-nov-de-2025-14-08-18-1.png";
-    "16";
+    "15";
     textura_grama2 = "https://i.ibb.co/DfRZz4r8/Chat-GPT-Image-25-de-nov-de-2025-14-08-18.png";
-    "17";
+    "16";
     textura_folhas = "https://static.vecteezy.com/system/resources/thumbnails/029/871/606/small/leafy-background-seamless-green-background-of-plants-seamless-background-of-leaves-illustration-vector.jpg";
-    "18";
+    "17";
     textura_tronco = "https://i.ibb.co/bjyM9Kxd/tronco-madeira.jpg";
-    "19";
+    "18";
     textura_escola = "https://i.ibb.co/XxkhcpQn/villa-Text.png";
+    "21";
+    scene.append_to_caption("<div style=\"height: 15px;\"><\/div>");
+    "25";
+    g_display = ρσ_interpolate_kwargs.call(this, graph, [ρσ_desugar_kwargs({title: "Monitoramento Ambiental", width: window.innerWidth["*"](.96), height: window.innerHeight["*"](.25), xtitle: "Tempo (s)", ytitle: "Escalas", fast: false, scroll: true, xmin: 0, xmax: 50})]);
     "28";
-    g_display = ρσ_interpolate_kwargs.call(this, graph, [ρσ_desugar_kwargs({title: "Monitoramento Ambiental", width: window.innerWidth["*"](.96), height: window.innerHeight["*"](.2), xtitle: "Tempo (s)", ytitle: "Escalas Variadas", fast: false, scroll: true, xmin: 0, xmax: 50})]);
-    "31";
-    plot_temp = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.red, label: "Temperatura (°C)"})]);
-    "32";
-    plot_press = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.blue, label: "Pressão (hPa/10 - Norm)"})]);
+    plot_temp = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.red, label: "Temp (°C)"})]);
+    "29";
+    plot_press = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.blue, label: "Pressão"})]);
+    "30";
+    plot_sol = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.yellow, label: "Radiação"})]);
     "33";
-    plot_sol = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.yellow, label: "Radiação Solar"})]);
-    "37";
+    largura_ant = 0;
+    "34";
+    altura_ant = 0;
+    "36";
     async function ajustar_tamanho() {
-        "38";
-        scene.width = window.innerWidth["*"](.96);
-        "39";
-        scene.height = window.innerHeight["*"](.5);
+        var ρσ_ls, eh_mobile;
+        "37";
         "40";
-        g_display.width = window.innerWidth["*"](.96);
-        "41";
-        g_display.height = window.innerHeight["*"](.3);
+        if ((window.innerWidth !== largura_ant && (typeof window.innerWidth !== "object" || ρσ_not_equals(window.innerWidth, largura_ant))) || (window.innerHeight !== altura_ant && (typeof window.innerHeight !== "object" || ρσ_not_equals(window.innerHeight, altura_ant)))) {
+            "41";
+            largura_ant = window.innerWidth;
+            "42";
+            altura_ant = window.innerHeight;
+            "44";
+            eh_mobile = window.innerWidth["<"](600);
+            "46";
+            if (eh_mobile) {
+                "48";
+                scene.width = window.innerWidth["*"](.98);
+                "49";
+                scene.height = window.innerHeight["*"](.4);
+                "50";
+                g_display.width = window.innerWidth["*"](.98);
+                "51";
+                g_display.height = window.innerHeight["*"](.25);
+                "52";
+                g_display.title = "";
+                "53";
+            } else {
+                "55";
+                scene.width = window.innerWidth["*"](.96);
+                "56";
+                scene.height = window.innerHeight["*"](.5);
+                "57";
+                g_display.width = window.innerWidth["*"](.96);
+                "58";
+                g_display.height = window.innerHeight["*"](.25);
+                "59";
+                g_display.title = "Monitoramento Ambiental";
+            }
+        }
     };
     if (!ajustar_tamanho.__module__) Object.defineProperties(ajustar_tamanho, {
         __module__ : {value: null}
     });
 
-    "46";
+    "62";
     function CicloSolar() {;
     }
     CicloSolar.prototype.__init__ = async function __init__() {
         var self = this;
-        "48";
+        "64";
         self.raio_orbita = 140;
-        "49";
+        "65";
         self.angulo = .5;
-        "50";
+        "66";
         self.velocidade = .2;
-        "52";
+        "68";
         self.esfera = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(self.raio_orbita, 0, 0), radius: 2, color: color.yellow, emissive: true})]);
-        "53";
+        "69";
         self.luz = ρσ_interpolate_kwargs.call(this, local_light, [ρσ_desugar_kwargs({pos: self.esfera.pos, color: color.white})]);
-        "55";
+        "71";
         self.eh_dia = true;
-        "56";
+        "72";
         self.fator_iluminacao = 1;
     };
     if (!CicloSolar.prototype.__init__.__module__) Object.defineProperties(CicloSolar.prototype.__init__, {
@@ -354,46 +389,46 @@ async function __main__() {
     CicloSolar.prototype.atualizar = async function atualizar(dt, tem_tempestade) {
         var self = this;
         var ρσ_ls, x, y, altura_norm, target_bg;
-        "59";
+        "75";
         self.angulo=self.angulo["+"](self.velocidade["*"](dt));
-        "60";
+        "76";
         x = self.raio_orbita["*"](cos(self.angulo));
-        "61";
+        "77";
         y = self.raio_orbita["*"](sin(self.angulo));
-        "63";
+        "79";
         self.esfera.pos = vec(x, y, 0);
-        "64";
+        "80";
         self.luz.pos = self.esfera.pos;
-        "66";
+        "82";
         altura_norm = y["/"](self.raio_orbita);
-        "67";
+        "83";
         self.fator_iluminacao = max(0, altura_norm);
-        "69";
+        "85";
         if (tem_tempestade) {
-            "70";
+            "86";
             target_bg = vec(.15, .15, .2);
-            "71";
+            "87";
             self.luz.color = vec(.3, .3, .3);
-            "72";
+            "88";
             self.eh_dia = false;
-            "73";
+            "89";
         } else if (altura_norm[">"](0)) {
-            "74";
+            "90";
             target_bg = vec(.4["*"](altura_norm), .7["*"](altura_norm), 1["*"](altura_norm));
-            "75";
+            "91";
             self.luz.color = vec(1, 1, 1)["*"](.3["+"](.7["*"](altura_norm)));
-            "76";
+            "92";
             self.eh_dia = true;
-            "77";
+            "93";
         } else {
-            "78";
+            "94";
             target_bg = vec(0, 0, .05);
-            "79";
+            "95";
             self.luz.color = vec(.1, .1, .15);
-            "80";
+            "96";
             self.eh_dia = false;
         }
-        "82";
+        "98";
         scene.background = target_bg;
     };
     if (!CicloSolar.prototype.atualizar.__argnames__) Object.defineProperties(CicloSolar.prototype.atualizar, {
@@ -410,7 +445,7 @@ async function __main__() {
     
     
 
-    "86";
+    "101";
     function Carro() {;
     }
     Carro.prototype.__init__ = async function __init__() {
@@ -424,61 +459,61 @@ async function __main__() {
             z_base = ρσ_kwargs_obj.z_base;
         }
         var ρσ_ls, start, offset, cor, faixa, pos, size, f_local_offset, dir_luz, luz, i;
-        "88";
+        "103";
         self.eixo = eixo;
-        "89";
+        "104";
         self.direcao = direcao;
-        "90";
+        "105";
         self.z_base = z_base;
-        "91";
+        "106";
         start = 1["-u"]()["*"](80)["*"](direcao);
-        "92";
+        "107";
         offset = 3.5;
-        "94";
+        "109";
         cor = vec(random.random(), random.random(), random.random());
-        "96";
+        "111";
         if ((eixo === "x" || typeof eixo === "object" && ρσ_equals(eixo, "x"))) {
-            "98";
+            "112";
             faixa = random.choice(ρσ_list_decorate([ 2, 5 ]));
-            "101";
+            "113";
             pos = vec(start, .6, self.z_base["+"](faixa["*"](((direcao === 1 || typeof direcao === "object" && ρσ_equals(direcao, 1))) ? 1 : 1["-u"]()["*"](1))));
-            "102";
+            "114";
             size = vec(4, 1.5, 2);
-            "103";
+            "115";
             self.vel_vec = vec(1, 0, 0);
-            "104";
+            "116";
         } else {
-            "105";
+            "117";
             pos = vec(1["-u"]()["*"](offset), .6, start);
-            "106";
+            "118";
             size = vec(2, 1.5, 4);
-            "107";
+            "119";
             self.vel_vec = vec(0, 0, 1);
         }
-        "109";
+        "121";
         self.body = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos, size: size, color: cor})]);
-        "110";
+        "122";
         self.cabin = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 1, 0)), size: size["*"](.6), color: color.black})]);
-        "111";
+        "123";
         self.speed = random.random()["*"](10)["+"](10)["*"](direcao);
-        "113";
+        "125";
         self.farois = ρσ_list_decorate([]);
-        "114";
+        "126";
         var ρσ_Iter6 = ρσ_list_decorate([ 1["-u"]()["*"](1), 1 ]);
         ρσ_Iter6 = ((typeof ρσ_Iter6[Symbol.iterator] === "function") ? (ρσ_Iter6 instanceof Map ? ρσ_Iter6.keys() : ρσ_Iter6) : Object.keys(ρσ_Iter6));
         for (var ρσ_Index6 of ρσ_Iter6) {
             i = ρσ_Index6;
-            "116";
+            "127";
             f_local_offset = vec(6, 0, i["*"](.5));
-            "117";
+            "128";
             if (ρσ_equals(direcao, 1["-u"]()["*"](1))) {
                 f_local_offset = vec(1["-u"]()["*"](6), 0, i["*"](.5));
             }
-            "119";
+            "130";
             dir_luz = self.vel_vec["*"](1["-u"]())["*"](direcao);
-            "120";
+            "131";
             luz = ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: pos["+"](f_local_offset), axis: dir_luz["*"](6), radius: 1.5, color: color.yellow, opacity: .3, visible: false})]);
-            "121";
+            "132";
             self.farois.append((function(){
                 var ρσ_d = ρσ_dict();
                 ρσ_d.set("obj", luz);
@@ -498,40 +533,40 @@ async function __main__() {
     Carro.prototype.mover = async function mover(dt, escuro) {
         var self = this;
         var ρσ_ls, delta, f, limite;
-        "124";
+        "135";
         delta = vec(0, 0, 0);
-        "125";
+        "136";
         if ((self.eixo === "x" || typeof self.eixo === "object" && ρσ_equals(self.eixo, "x"))) {
             delta = vec(self.speed["*"](dt), 0, 0);
         } else {
             delta = vec(0, 0, self.speed["*"](dt));
         }
-        "128";
+        "139";
         self.body.pos=self.body.pos["+"](delta);
-        "129";
+        "140";
         self.cabin.pos=self.cabin.pos["+"](delta);
-        "131";
+        "142";
         var ρσ_Iter7 = self.farois;
         ρσ_Iter7 = ((typeof ρσ_Iter7[Symbol.iterator] === "function") ? (ρσ_Iter7 instanceof Map ? ρσ_Iter7.keys() : ρσ_Iter7) : Object.keys(ρσ_Iter7));
         for (var ρσ_Index7 of ρσ_Iter7) {
             f = ρσ_Index7;
-            "132";
+            "143";
             ρσ_getitem(f, "obj").pos = self.body.pos["+"](ρσ_getitem(f, "local_offset"));
-            "134";
+            "144";
             if (!f.get("is_brake")) {
-                "135";
+                "145";
                 ρσ_getitem(f, "obj").visible = escuro;
             }
         }
-        "137";
+        "147";
         limite = 100;
-        "138";
+        "148";
         if ((self.eixo === "x" || typeof self.eixo === "object" && ρσ_equals(self.eixo, "x"))) {
-            "139";
+            "149";
             if (abs(self.body.pos.x)[">"](limite)) {
-                "141";
+                "150";
                 self.body.pos.x = ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1))) ? 1["-u"]()["*"](limite) : limite;
-                "142";
+                "151";
                 self.cabin.pos.x = ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1))) ? 1["-u"]()["*"](limite) : limite;
             }
         }
@@ -550,46 +585,46 @@ async function __main__() {
     
     
 
-    "146";
+    "154";
     function TremMetro() {;
     }
     TremMetro.prototype.__init__ = async function __init__(z_linha, direcao) {
         var self = this;
         var ρσ_ls, pos_x, cor_trem, offset_x, v, faixa, janelas, win, j, i, frente_x;
-        "148";
-        self.z_linha = z_linha;
-        "149";
-        self.velocidade = 50;
-        "150";
-        self.direcao = direcao;
-        "153";
-        pos_x = ((direcao === 1 || typeof direcao === "object" && ρσ_equals(direcao, 1))) ? 1["-u"]()["*"](90) : 90;
-        "154";
-        self.posicao = vec(pos_x, 1.5, z_linha);
         "156";
-        self.vagoes = ρσ_list_decorate([]);
+        self.z_linha = z_linha;
         "157";
+        self.velocidade = 50;
+        "158";
+        self.direcao = direcao;
+        "160";
+        pos_x = ((direcao === 1 || typeof direcao === "object" && ρσ_equals(direcao, 1))) ? 1["-u"]()["*"](90) : 90;
+        "161";
+        self.posicao = vec(pos_x, 1.5, z_linha);
+        "163";
+        self.vagoes = ρσ_list_decorate([]);
+        "164";
         cor_trem = vec(.8, .8, .9);
-        "159";
+        "166";
         for (var ρσ_Index8 = 0; ρσ_Index8["<"](3); ρσ_Index8++) {
             i = ρσ_Index8;
-            "160";
+            "167";
             offset_x = i["*"](1["-u"]())["*"](14)["*"](direcao);
-            "162";
+            "169";
             v = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x), 1.8, z_linha), size: vec(12, 3, 3.2), color: cor_trem})]);
-            "163";
+            "170";
             faixa = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x), 1.8, z_linha), size: vec(12.1, .5, 3.3), color: color.blue})]);
-            "165";
+            "172";
             janelas = ρσ_list_decorate([]);
-            "166";
+            "173";
             for (var ρσ_Index9 = 1["-u"]()["*"](4); ρσ_Index9["<"](5); ρσ_Index9=ρσ_Index9["+"](2)) {
                 j = ρσ_Index9;
-                "167";
+                "174";
                 win = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](offset_x)["+"](j), 2.2, z_linha), size: vec(1.5, 1, 3.4), color: color.black})]);
-                "168";
+                "175";
                 janelas.append(win);
             }
-            "170";
+            "177";
             self.vagoes.append((function(){
                 var ρσ_d = ρσ_dict();
                 ρσ_d.set("corpo", v);
@@ -599,9 +634,9 @@ async function __main__() {
                 return ρσ_d;
             }).call(this));
         }
-        "173";
+        "179";
         frente_x = 6["*"](direcao);
-        "174";
+        "180";
         self.farol = ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: vec(pos_x["+"](frente_x), 1.5, z_linha), axis: vec(10["*"](1["-u"]())["*"](direcao), 1["-u"]()["*"](2), 0), radius: 3, color: color.white, opacity: .3, visible: false})]);
     };
     if (!TremMetro.prototype.__init__.__argnames__) Object.defineProperties(TremMetro.prototype.__init__, {
@@ -613,45 +648,45 @@ async function __main__() {
     TremMetro.prototype.mover = async function mover(dt, escuro) {
         var self = this;
         var ρσ_ls, deslocamento, base_janela_x, win, vagao, frente_x;
-        "177";
+        "183";
         deslocamento = self.velocidade["*"](dt)["*"](self.direcao);
-        "178";
+        "184";
         self.posicao.x=self.posicao.x["+"](deslocamento);
-        "181";
+        "186";
         var ρσ_Iter10 = self.vagoes;
         ρσ_Iter10 = ((typeof ρσ_Iter10[Symbol.iterator] === "function") ? (ρσ_Iter10 instanceof Map ? ρσ_Iter10.keys() : ρσ_Iter10) : Object.keys(ρσ_Iter10));
         for (var ρσ_Index10 of ρσ_Iter10) {
             vagao = ρσ_Index10;
-            "182";
+            "187";
             ρσ_getitem(vagao, "corpo").pos.x = self.posicao.x["+"](ρσ_getitem(vagao, "offset_inicial"));
-            "183";
+            "188";
             ρσ_getitem(vagao, "faixa").pos.x = self.posicao.x["+"](ρσ_getitem(vagao, "offset_inicial"));
-            "185";
+            "190";
             base_janela_x = 1["-u"]()["*"](4);
-            "186";
+            "191";
             var ρσ_Iter11 = ρσ_getitem(vagao, "janelas");
             ρσ_Iter11 = ((typeof ρσ_Iter11[Symbol.iterator] === "function") ? (ρσ_Iter11 instanceof Map ? ρσ_Iter11.keys() : ρσ_Iter11) : Object.keys(ρσ_Iter11));
             for (var ρσ_Index11 of ρσ_Iter11) {
                 win = ρσ_Index11;
-                "187";
+                "192";
                 win.pos.x = ρσ_getitem(vagao, "corpo").pos.x["+"](base_janela_x);
-                "188";
+                "193";
                 base_janela_x=base_janela_x["+"](2);
             }
         }
-        "190";
-        frente_x = 13["*"](self.direcao);
-        "191";
-        self.farol.pos = vec(self.posicao.x["+"](frente_x), 1.5, self.z_linha);
-        "192";
-        self.farol.visible = escuro;
         "195";
+        frente_x = 13["*"](self.direcao);
+        "196";
+        self.farol.pos = vec(self.posicao.x["+"](frente_x), 1.5, self.z_linha);
+        "197";
+        self.farol.visible = escuro;
+        "199";
         if ((self.direcao === 1 || typeof self.direcao === "object" && ρσ_equals(self.direcao, 1)) && self.posicao.x[">"](130)) {
-            "196";
+            "200";
             self.posicao.x = 1["-u"]()["*"](130);
-            "197";
+            "201";
         } else if (ρσ_equals(self.direcao, 1["-u"]()["*"](1)) && self.posicao.x["<"](1["-u"]()["*"](130))) {
-            "198";
+            "202";
             self.posicao.x = 130;
         }
     };
@@ -669,63 +704,61 @@ async function __main__() {
     
     
 
-    "202";
+    "205";
     function Cidade() {;
     }
     Cidade.prototype.__init__ = async function __init__() {
         var self = this;
         var ρσ_ls, x;
-        "205";
+        "207";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, 1["-u"]()["*"](.5), 1["-u"]()["*"](20)), size: vec(260, 1, 200), texture: textura_grama})]);
-        "209";
+        "210";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, 0), size: vec(260, .1, 14), color: vec(.2, .2, .2)})]);
-        "212";
+        "211";
         self.z_avenida2 = 1["-u"]()["*"](24);
-        "213";
+        "212";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida2), size: vec(260, .1, 14), color: vec(.2, .2, .2)})]);
-        "217";
+        "214";
         self.z_avenida3 = 1["-u"]()["*"](62);
-        "218";
+        "215";
         self.z_avenida4 = 1["-u"]()["*"](82);
-        "221";
+        "217";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida3), size: vec(260, .1, 12), color: vec(.2, .2, .2)})]);
-        "222";
+        "218";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .01, self.z_avenida4), size: vec(260, .1, 12), color: vec(.2, .2, .2)})]);
-        "225";
+        "221";
         for (var ρσ_Index12 = 1["-u"]()["*"](130); ρσ_Index12["<"](130); ρσ_Index12=ρσ_Index12["+"](10)) {
             x = ρσ_Index12;
-            "226";
+            "222";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, 0), size: vec(5, .01, .4), color: color.white})]);
-            "227";
+            "223";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida2), size: vec(5, .01, .4), color: color.white})]);
-            "229";
+            "224";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida3), size: vec(5, .01, .4), color: color.white})]);
-            "230";
+            "225";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .11, self.z_avenida4), size: vec(5, .01, .4), color: color.white})]);
         }
-        "232";
+        "227";
         self.postes = ρσ_list_decorate([]);
-        "233";
-        self.predios = ρσ_list_decorate([]);
-        "234";
+        "228";
         self.escola_pos = vec(0, 0, 22);
-        "237";
+        "230";
         self.z_metro1 = 1["-u"]()["*"](36);
-        "238";
+        "231";
         self.z_metro2 = 1["-u"]()["*"](42);
-        "240";
+        "233";
         (await self.construir_luzes());
-        "241";
+        "234";
         (await self.add_linhas_metro());
-        "242";
+        "235";
         (await self.add_escola());
-        "243";
+        "236";
         (await self.add_circo());
-        "244";
+        "237";
         (await self.add_estacionamento());
-        "245";
+        "238";
         (await self.add_bosque());
-        "246";
+        "239";
         (await self.add_vegetacao_canteiros());
     };
     if (!Cidade.prototype.__init__.__module__) Object.defineProperties(Cidade.prototype.__init__, {
@@ -736,16 +769,16 @@ async function __main__() {
     Cidade.prototype.construir_luzes = async function construir_luzes() {
         var self = this;
         var ρσ_ls, i;
-        "250";
+        "242";
         for (var ρσ_Index13 = 1["-u"]()["*"](80); ρσ_Index13["<"](81); ρσ_Index13=ρσ_Index13["+"](25)) {
             i = ρσ_Index13;
-            "252";
+            "243";
             (await self.add_poste(i, 9));
-            "253";
+            "244";
             (await self.add_poste(i, self.z_avenida2["-"](1["*"](9))));
-            "256";
+            "245";
             (await self.add_poste(i, self.z_avenida3["+"](7)));
-            "257";
+            "246";
             (await self.add_poste(i, self.z_avenida4["-"](1["*"](7))));
         }
     };
@@ -755,33 +788,33 @@ async function __main__() {
     Cidade.prototype.add_vegetacao_canteiros = async function add_vegetacao_canteiros() {
         var self = this;
         var ρσ_ls, zonas_canteiros, offset_x, offset_z, raio, cor, x, z_base;
-        "262";
+        "249";
         zonas_canteiros = ρσ_list_decorate([ 1["-u"]()["*"](12), 1["-u"]()["*"](72) ]);
-        "264";
+        "250";
         var ρσ_Iter14 = zonas_canteiros;
         ρσ_Iter14 = ((typeof ρσ_Iter14[Symbol.iterator] === "function") ? (ρσ_Iter14 instanceof Map ? ρσ_Iter14.keys() : ρσ_Iter14) : Object.keys(ρσ_Iter14));
         for (var ρσ_Index14 of ρσ_Iter14) {
             z_base = ρσ_Index14;
-            "265";
+            "251";
             for (var ρσ_Index15 = 1["-u"]()["*"](125); ρσ_Index15["<"](125); ρσ_Index15=ρσ_Index15["+"](3)) {
                 x = ρσ_Index15;
-                "267";
+                "252";
                 if (random.random()[">"](.4)) {
-                    "268";
+                    "253";
                     offset_x = random.uniform(1["-u"]()["*"](1), 1);
-                    "269";
+                    "254";
                     offset_z = random.uniform(1["-u"]()["*"](1.5), 1.5);
-                    "272";
+                    "255";
                     if (random.random()["<"](.15)) {
-                        "273";
+                        "256";
                         (await self.add_arvore(x["+"](offset_x), z_base["+"](offset_z)));
-                        "274";
+                        "257";
                     } else {
-                        "275";
+                        "258";
                         raio = random.uniform(.4, .9);
-                        "276";
+                        "259";
                         cor = vec(0, random.uniform(.3, .6), 0);
-                        "277";
+                        "260";
                         ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(x["+"](offset_x), raio["/"](2), z_base["+"](offset_z)), radius: raio, color: cor})]);
                     }
                 }
@@ -794,38 +827,38 @@ async function __main__() {
     Cidade.prototype.add_linhas_metro = async function add_linhas_metro() {
         var self = this;
         var ρσ_ls, z_centro_metro, largura_base, x;
-        "281";
+        "263";
         z_centro_metro = self.z_metro1["+"](self.z_metro2)["/"](2);
-        "282";
+        "264";
         largura_base = abs(self.z_metro1["-"](1["*"](self.z_metro2)))["+"](6);
-        "283";
+        "265";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .1, z_centro_metro), size: vec(260, .2, largura_base), color: vec(.4, .4, .4)})]);
-        "286";
+        "268";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro1["-"](1["*"](1.5))), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
-        "287";
+        "269";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro1["+"](1.5)), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
-        "288";
+        "270";
         for (var ρσ_Index16 = 1["-u"]()["*"](130); ρσ_Index16["<"](130); ρσ_Index16=ρσ_Index16["+"](2)) {
             x = ρσ_Index16;
-            "289";
+            "271";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .2, self.z_metro1), size: vec(1, .15, 4), color: vec(.3, .2, .1)})]);
         }
-        "292";
+        "274";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro2["-"](1["*"](1.5))), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
-        "293";
+        "275";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(0, .3, self.z_metro2["+"](1.5)), size: vec(260, .2, .2), color: vec(.7, .7, .75)})]);
-        "294";
+        "276";
         for (var ρσ_Index17 = 1["-u"]()["*"](130); ρσ_Index17["<"](130); ρσ_Index17=ρσ_Index17["+"](2)) {
             x = ρσ_Index17;
-            "295";
+            "277";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, .2, self.z_metro2), size: vec(1, .15, 4), color: vec(.3, .2, .1)})]);
         }
-        "298";
+        "280";
         for (var ρσ_Index18 = 1["-u"]()["*"](80); ρσ_Index18["<"](81); ρσ_Index18=ρσ_Index18["+"](40)) {
             x = ρσ_Index18;
-            "299";
+            "281";
             ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z_centro_metro), axis: vec(0, 8, 0), radius: .3, color: color.gray(.3)})]);
-            "300";
+            "282";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, 8, z_centro_metro), size: vec(.2, .2, 10), color: color.gray(.3)})]);
         }
     };
@@ -835,38 +868,38 @@ async function __main__() {
     Cidade.prototype.add_escola = async function add_escola() {
         var self = this;
         var ρσ_ls, ρσ_unpack, x, z, comp, larg, h, offset_x, w_x, j, i;
-        "303";
+        "285";
         ρσ_unpack = [self.escola_pos.x, self.escola_pos.z];
         x = ρσ_unpack[0];
         z = ρσ_unpack[1];
-        "304";
+        "286";
         ρσ_unpack = [40, 20, 12];
         comp = ρσ_unpack[0];
         larg = ρσ_unpack[1];
         h = ρσ_unpack[2];
-        "308";
+        "288";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["/"](2), z), size: vec(comp, h, larg), color: color.white})]);
-        "311";
+        "289";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["+"](.5), z), size: vec(comp["+"](1), 1, larg["+"](1)), color: vec(.2, .2, .2)})]);
-        "315";
+        "292";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["/"](2)["-"](1["*"](1)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.1))), size: vec(8, h["-"](1["*"](2)), .2), color: vec(.7, .8, 1), opacity: .6})]);
-        "318";
+        "293";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x, h["-"](1["*"](3)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](1.5))), size: vec(10, .5, 3), color: vec(.3, .3, .3)})]);
-        "322";
+        "296";
         for (var ρσ_Index19 = 0; ρσ_Index19["<"](2); ρσ_Index19++) {
             i = ρσ_Index19;
-            "323";
+            "297";
             offset_x = ((i === 0 || typeof i === "object" && ρσ_equals(i, 0))) ? 12 : 1["-u"]()["*"](12);
-            "325";
+            "298";
             for (var ρσ_Index20 = 0; ρσ_Index20["<"](4); ρσ_Index20++) {
                 j = ρσ_Index20;
-                "326";
+                "299";
                 w_x = x["+"](offset_x)["+"](j["-"](1["*"](1.5))["*"](2.5));
-                "327";
+                "300";
                 ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(w_x, h["/"](2), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.1))), size: vec(1.5, h["-"](1["*"](2)), .2), color: vec(.7, .8, 1), opacity: .6})]);
             }
         }
-        "331";
+        "302";
         ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, h["-"](1["*"](2)), z["-"](1["*"](larg)["/"](2))["-"](1["*"](.2))), axis: vec(0, 0, .1), radius: 1.5, color: color.white})]);
     };
     if (!Cidade.prototype.add_escola.__module__) Object.defineProperties(Cidade.prototype.add_escola, {
@@ -875,29 +908,29 @@ async function __main__() {
     Cidade.prototype.add_circo = async function add_circo() {
         var self = this;
         var ρσ_ls, pos, ρσ_unpack, r_base, h_base, angle, x, z, cor, angle_deg;
-        "335";
+        "306";
         pos = self.escola_pos["+"](vec(1["-u"]()["*"](35), 0, 0));
-        "336";
+        "307";
         ρσ_unpack = [8, 6];
         r_base = ρσ_unpack[0];
         h_base = ρσ_unpack[1];
-        "337";
+        "308";
         for (var ρσ_Index21 = 0; ρσ_Index21["<"](360); ρσ_Index21=ρσ_Index21["+"](15)) {
             angle_deg = ρσ_Index21;
-            "338";
+            "309";
             angle = (await radians(angle_deg));
-            "339";
+            "310";
             ρσ_unpack = [r_base["*"](cos(angle)), r_base["*"](sin(angle))];
             x = ρσ_unpack[0];
             z = ρσ_unpack[1];
-            "340";
+            "311";
             cor = (ρσ_equals(angle_deg["%"](30), 0)) ? color.red : color.white;
-            "341";
+            "312";
             ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pos["+"](vec(x, 0, z)), axis: vec(0, h_base, 0), radius: 1.3, color: cor})]);
         }
-        "342";
+        "313";
         ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, h_base, 0)), axis: vec(0, 8, 0), radius: r_base["+"](2), color: color.red})]);
-        "343";
+        "314";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 2, 1["-u"]()["*"](r_base))), size: vec(4, 4, 2), color: color.black})]);
     };
     if (!Cidade.prototype.add_circo.__module__) Object.defineProperties(Cidade.prototype.add_circo, {
@@ -906,32 +939,32 @@ async function __main__() {
     Cidade.prototype.add_estacionamento = async function add_estacionamento() {
         var self = this;
         var ρσ_ls, pos, largura_est, profundidade_est, start_x, x_slot, cor_c, i;
-        "346";
+        "317";
         pos = self.escola_pos["+"](vec(35, .05, 0));
-        "347";
+        "318";
         largura_est = 30;
-        "348";
+        "319";
         profundidade_est = 20;
-        "349";
+        "320";
         ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: pos, size: vec(largura_est, .1, profundidade_est), color: vec(.3, .3, .35)})]);
-        "350";
+        "321";
         ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pos["+"](vec(0, 0, 1["-u"]()["*"](profundidade_est)["/"](2))), axis: vec(0, 5, 0), radius: .2, color: color.gray(.5)})]);
-        "353";
+        "323";
         start_x = pos.x["-"](1["*"](largura_est)["/"](2))["+"](4);
-        "354";
+        "324";
         for (var ρσ_Index22 = 0; ρσ_Index22["<"](5); ρσ_Index22++) {
             i = ρσ_Index22;
-            "355";
+            "325";
             x_slot = start_x["+"](i["*"](5.5));
-            "356";
+            "326";
             ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot["-"](1["*"](2.75)), .1, pos.z), size: vec(.2, .12, profundidade_est["-"](1["*"](2))), color: color.white})]);
-            "357";
+            "327";
             if (random.random()[">"](.3)) {
-                "358";
+                "328";
                 cor_c = vec(random.random(), random.random(), random.random());
-                "359";
+                "329";
                 ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot, 1, pos.z), size: vec(3, 1.5, 4), color: cor_c})]);
-                "360";
+                "330";
                 ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(x_slot, 1.8, pos.z), size: vec(2.5, .8, 2.5), color: color.black})]);
             }
         }
@@ -942,24 +975,24 @@ async function __main__() {
     Cidade.prototype.add_bosque = async function add_bosque() {
         var self = this;
         var ρσ_ls, x, z, _;
-        "364";
+        "334";
         for (var ρσ_Index23 = 0; ρσ_Index23["<"](200); ρσ_Index23++) {
             _ = ρσ_Index23;
-            "365";
+            "335";
             x = random.uniform(1["-u"]()["*"](130), 130);
-            "366";
+            "336";
             z = random.uniform(35, 75);
-            "367";
+            "337";
             (await self.add_arvore(x, z));
         }
-        "370";
+        "339";
         for (var ρσ_Index24 = 0; ρσ_Index24["<"](150); ρσ_Index24++) {
             _ = ρσ_Index24;
-            "371";
+            "340";
             x = random.uniform(1["-u"]()["*"](130), 130);
-            "372";
+            "341";
             z = random.uniform(1["-u"]()["*"](115), 1["-u"]()["*"](90));
-            "373";
+            "342";
             (await self.add_arvore(x, z));
         }
     };
@@ -968,21 +1001,19 @@ async function __main__() {
     });
     Cidade.prototype.add_arvore = async function add_arvore(x, z) {
         var self = this;
-        var ρσ_ls, h_copa, r_copa, cor_verde;
-        "376";
+        var ρσ_ls, h_copa, r_copa;
+        "345";
         ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z), axis: vec(0, 2.5, 0), radius: .5, texture: (function(){
             var ρσ_d = ρσ_dict();
             ρσ_d.set("file", textura_tronco);
             ρσ_d.set("rotate", pi["/"](2));
             return ρσ_d;
         }).call(this)})]);
-        "377";
+        "346";
         h_copa = 4["+"](random.uniform(0, 2));
-        "378";
+        "347";
         r_copa = 2["+"](random.uniform(0, 1));
-        "379";
-        cor_verde = vec(0, .5["+"](random.uniform(0, .3)), 0);
-        "380";
+        "348";
         ρσ_interpolate_kwargs.call(this, cone, [ρσ_desugar_kwargs({pos: vec(x, 2.5, z), axis: vec(0, h_copa, 0), radius: r_copa, texture: textura_folhas, texscale: vec(3, 3, 0)})]);
     };
     if (!Cidade.prototype.add_arvore.__argnames__) Object.defineProperties(Cidade.prototype.add_arvore, {
@@ -992,11 +1023,11 @@ async function __main__() {
     Cidade.prototype.add_poste = async function add_poste(x, z) {
         var self = this;
         var ρσ_ls, luz;
-        "384";
+        "351";
         ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: vec(x, 0, z), axis: vec(0, 7, 0), radius: .3, color: color.gray(.4)})]);
-        "385";
+        "352";
         luz = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(x, 7, z), radius: .6, color: color.white, emissive: false})]);
-        "386";
+        "353";
         self.postes.append(luz);
     };
     if (!Cidade.prototype.add_poste.__argnames__) Object.defineProperties(Cidade.prototype.add_poste, {
@@ -1006,18 +1037,18 @@ async function __main__() {
     Cidade.prototype.gerenciar_luzes = async function gerenciar_luzes(escuro) {
         var self = this;
         var ρσ_ls, cor_poste, emissao, p;
-        "389";
+        "356";
         cor_poste = (escuro) ? color.yellow : color.black;
-        "390";
+        "357";
         emissao = (escuro) ? true : false;
-        "391";
+        "358";
         var ρσ_Iter25 = self.postes;
         ρσ_Iter25 = ((typeof ρσ_Iter25[Symbol.iterator] === "function") ? (ρσ_Iter25 instanceof Map ? ρσ_Iter25.keys() : ρσ_Iter25) : Object.keys(ρσ_Iter25));
         for (var ρσ_Index25 of ρσ_Iter25) {
             p = ρσ_Index25;
-            "392";
+            "359";
             p.color = cor_poste;
-            "393";
+            "360";
             p.emissive = emissao;
         }
     };
@@ -1044,24 +1075,24 @@ async function __main__() {
     
     
 
-    "397";
+    "363";
     function Estacao() {;
     }
     Estacao.prototype.__init__ = async function __init__(sol_obj) {
         var self = this;
-        "399";
+        "365";
         self.sol = sol_obj;
-        "400";
+        "366";
         self.pressao = 1013;
-        "401";
+        "367";
         self.temperatura = 27;
-        "402";
+        "368";
         self.tempo = 0;
-        "403";
+        "369";
         self.chuva_ativa = false;
-        "404";
+        "370";
         self.gotas = ρσ_list_decorate([]);
-        "405";
+        "371";
         self.base = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: vec(18, 8, 18), size: vec(3, 3, 3), color: color.white})]);
     };
     if (!Estacao.prototype.__init__.__argnames__) Object.defineProperties(Estacao.prototype.__init__, {
@@ -1072,38 +1103,36 @@ async function __main__() {
     Estacao.__handles_kwarg_interpolation__ = Estacao.prototype.__init__.__handles_kwarg_interpolation__;
     Estacao.prototype.atualizar = async function atualizar(dt) {
         var self = this;
-        var ρσ_ls, threshold_chuva, temp_alvo, norm_t, status;
-        "408";
+        var ρσ_ls, threshold_chuva, temp_alvo, norm_t;
+        "374";
         self.tempo=self.tempo["+"](dt);
-        "409";
+        "375";
         threshold_chuva = 995;
-        "410";
+        "376";
         self.chuva_ativa = self.pressao["<"](threshold_chuva);
-        "411";
+        "377";
         if (self.chuva_ativa) {
             (await self.gerar_chuva());
         } else {
             (await self.limpar_chuva());
         }
-        "414";
+        "380";
         temp_alvo = 23["+"]((self.sol.fator_iluminacao[">"](0)) ? self.sol.fator_iluminacao["*"](8) : 0);
-        "415";
+        "381";
         if (self.chuva_ativa) {
             temp_alvo=temp_alvo["-"](2);
         }
-        "416";
+        "382";
         self.temperatura=self.temperatura["+"](temp_alvo["-"](1["*"](self.temperatura))["*"](.05));
-        "418";
+        "384";
         norm_t = max(0, min(1, self.temperatura["-"](1["*"](21))["/"](10)));
-        "419";
+        "385";
         self.base.color = vec(norm_t, 0, 1["-"](1["*"](norm_t)));
-        "420";
-        status = (self.chuva_ativa) ? "CHUVA" : "SECO";
-        "422";
+        "387";
         plot_temp.plot(self.tempo, self.temperatura);
-        "423";
+        "388";
         plot_press.plot(self.tempo, self.pressao["-"](1["*"](950))["/"](5)["+"](20));
-        "424";
+        "389";
         plot_sol.plot(self.tempo, 20["+"](self.sol.fator_iluminacao["*"](10)));
     };
     if (!Estacao.prototype.atualizar.__argnames__) Object.defineProperties(Estacao.prototype.atualizar, {
@@ -1113,27 +1142,27 @@ async function __main__() {
     Estacao.prototype.gerar_chuva = async function gerar_chuva() {
         var self = this;
         var ρσ_ls, g;
-        "427";
+        "392";
         if (len(self.gotas)["<"](150)) {
-            "428";
+            "393";
             g = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](100)["-"](1["*"](50))), radius: .2, color: vec(.6, .6, 1), emissive: true})]);
-            "430";
+            "395";
             g.v = vec(0, 1["-u"]()["*"](35), 0);
-            "431";
+            "396";
             self.gotas.append(g);
         }
-        "432";
+        "397";
         var ρσ_Iter26 = self.gotas;
         ρσ_Iter26 = ((typeof ρσ_Iter26[Symbol.iterator] === "function") ? (ρσ_Iter26 instanceof Map ? ρσ_Iter26.keys() : ρσ_Iter26) : Object.keys(ρσ_Iter26));
         for (var ρσ_Index26 of ρσ_Iter26) {
             g = ρσ_Index26;
-            "433";
+            "398";
             g.pos=g.pos["+"](g.v["*"](.05));
-            "434";
+            "399";
             if (g.pos.y["<"](0)) {
                 g.pos.y = 40["+"](random.random()["*"](10));
             }
-            "435";
+            "400";
             g.visible = true;
         }
     };
@@ -1143,7 +1172,7 @@ async function __main__() {
     Estacao.prototype.limpar_chuva = async function limpar_chuva() {
         var self = this;
         var ρσ_ls, g;
-        "438";
+        "403";
         var ρσ_Iter27 = self.gotas;
         ρσ_Iter27 = ((typeof ρσ_Iter27[Symbol.iterator] === "function") ? (ρσ_Iter27 instanceof Map ? ρσ_Iter27.keys() : ρσ_Iter27) : Object.keys(ρσ_Iter27));
         for (var ρσ_Index27 of ρσ_Iter27) {
@@ -1166,59 +1195,59 @@ async function __main__() {
     
     
 
-    "442";
+    "406";
     _GS_1 = new CicloSolar;
     (await _GS_1.__init__());
     sol = _GS_1;
-    "443";
+    "407";
     _GS_1 = new Cidade;
     (await _GS_1.__init__());
     cidade = _GS_1;
-    "444";
+    "408";
     _GS_1 = new Estacao;
     (await _GS_1.__init__(sol));
     estacao = _GS_1;
-    "447";
+    "410";
     _GS_1 = new TremMetro;
     (await _GS_1.__init__(cidade.z_metro1, 1));
     metro1 = _GS_1;
-    "448";
+    "411";
     _GS_1 = new TremMetro;
     (await _GS_1.__init__(cidade.z_metro2, 1["-u"]()["*"](1)));
     metro2 = _GS_1;
-    "451";
+    "413";
     carros = ρσ_list_decorate([]);
-    "455";
+    "415";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 0})]));
     for (var ρσ_Index28 = 0; ρσ_Index28["<"](7); ρσ_Index28++) {
         _ = ρσ_Index28;
         carros.append(_GS_1);
     }
-    "457";
+    "416";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 1["-u"]()["*"](24)})]));
     for (var ρσ_Index29 = 0; ρσ_Index29["<"](7); ρσ_Index29++) {
         _ = ρσ_Index29;
         carros.append(_GS_1);
     }
-    "461";
+    "418";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida3})]));
     for (var ρσ_Index30 = 0; ρσ_Index30["<"](7); ρσ_Index30++) {
         _ = ρσ_Index30;
         carros.append(_GS_1);
     }
-    "463";
+    "419";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida4})]));
     for (var ρσ_Index31 = 0; ρσ_Index31["<"](7); ρσ_Index31++) {
         _ = ρσ_Index31;
         carros.append(_GS_1);
     }
-    "466";
+    "422";
     async function muda_pressao(s) {
-        "467";
+        "423";
         estacao.pressao = s.value;
     };
     if (!muda_pressao.__argnames__) Object.defineProperties(muda_pressao, {
@@ -1226,46 +1255,44 @@ async function __main__() {
         __module__ : {value: null}
     });
 
-    "469";
-    scene.append_to_caption("\n<b>CONTROLE CLIMÁTICO<\/b>\n");
-    "470";
-    scene.append_to_caption("Pressão (<995 inicia tempestade): ");
-    "471";
-    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 980, max: 1040, value: 1013, length: 250, bind: muda_pressao, left: window.innerWidth["*"](.25)})]);
-    "474";
+    "425";
+    scene.append_to_caption("\n<b>CLIMA:</b> Pressão ");
+    "426";
+    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 980, max: 1040, value: 1013, length: window.innerWidth["*"](.5), bind: muda_pressao})]);
+    "429";
     dt = .05;
-    "475";
+    "430";
     estado_anterior_escuro = false;
-    "477";
+    "432";
     while (true) {
-        "478";
+        "433";
         (await rate(30));
-        "479";
+        "434";
         (await ajustar_tamanho());
-        "480";
+        "436";
         esta_escuro = !(sol.eh_dia) || estacao.chuva_ativa;
-        "482";
+        "439";
         (await sol.atualizar(dt, estacao.chuva_ativa));
-        "483";
+        "440";
         (await estacao.atualizar(dt));
-        "485";
+        "442";
         if ((esta_escuro !== estado_anterior_escuro && (typeof esta_escuro !== "object" || ρσ_not_equals(esta_escuro, estado_anterior_escuro)))) {
-            "486";
+            "443";
             (await cidade.gerenciar_luzes(esta_escuro));
-            "496";
+            "444";
             estado_anterior_escuro = esta_escuro;
         }
-        "498";
+        "446";
         var ρσ_Iter32 = carros;
         ρσ_Iter32 = ((typeof ρσ_Iter32[Symbol.iterator] === "function") ? (ρσ_Iter32 instanceof Map ? ρσ_Iter32.keys() : ρσ_Iter32) : Object.keys(ρσ_Iter32));
         for (var ρσ_Index32 of ρσ_Iter32) {
             c = ρσ_Index32;
-            "499";
+            "447";
             (await c.mover(dt, esta_escuro));
         }
-        "501";
+        "449";
         (await metro1.mover(dt, esta_escuro));
-        "502";
+        "450";
         (await metro2.mover(dt, esta_escuro));
     }
 };
