@@ -20,8 +20,8 @@
         <div id="glowscript" class="glowscript"></div>
     </div>
 
-    <script>
-        ;(function() {;
+<script>
+    ;(function() {;
 var ρσ_modules = {};
 var largura_ant, altura_ant;
 ρσ_modules.pythonize = {};
@@ -268,7 +268,7 @@ async function __main__() {
 
     function round(num, n=0) {return Number(num.toFixed(n))}
 
-    var version, print, arange, __name__, type, ρσ_ls, textura_grama, textura_grama2, textura_folhas, textura_tronco, textura_escola, g_display, plot_temp, plot_press, plot_sol, largura_ant, altura_ant, _GS_1, sol, cidade, estacao, metro1, metro2, carros, _, dt, estado_anterior_escuro, esta_escuro, c;
+    var version, print, arange, __name__, type, ρσ_ls, textura_grama, textura_grama2, textura_folhas, textura_tronco, textura_escola, g_display, plot_temp, plot_press, plot_sol, largura_ant, altura_ant, _GS_1, sol, cidade, estacao, metro1, metro2, carros, _, dt, estado_anterior_escuro, contadorDeMudancaPressao, intervaloMudancaPressao, esta_escuro, c;
     version = ρσ_list_decorate([ "3.2", "glowscript" ]);
     Array.prototype['+'] = function(r) {return this.concat(r)}
     Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
@@ -285,7 +285,7 @@ async function __main__() {
     "6";
     scene.width = window.innerWidth["*"](.96);
     "7";
-    scene.height = window.innerHeight["*"](.45);
+    scene.height = window.innerHeight["*"](.55);
     "8";
     scene.center = vec(5, 0, 1["-u"]()["*"](30));
     "9";
@@ -307,7 +307,7 @@ async function __main__() {
     "21";
     scene.append_to_caption("<div style=\"height: 15px;\"><\/div>");
     "25";
-    g_display = ρσ_interpolate_kwargs.call(this, graph, [ρσ_desugar_kwargs({title: "Monitoramento Ambiental", width: window.innerWidth["*"](.96), height: window.innerHeight["*"](.25), xtitle: "Tempo (s)", ytitle: "Escalas", fast: false, scroll: true, xmin: 0, xmax: 50})]);
+    g_display = ρσ_interpolate_kwargs.call(this, graph, [ρσ_desugar_kwargs({title: "Monitoramento Ambiental", width: window.innerWidth["*"](.96), height: window.innerHeight["*"](.33), xtitle: "Tempo (s)", ytitle: "Escalas", fast: false, scroll: true, xmin: 0, xmax: 50})]);
     "28";
     plot_temp = ρσ_interpolate_kwargs.call(this, gcurve, [ρσ_desugar_kwargs({color: color.red, label: "Temp (°C)"})]);
     "29";
@@ -1101,38 +1101,47 @@ async function __main__() {
     });
     Estacao.__argnames__ = Estacao.prototype.__init__.__argnames__;
     Estacao.__handles_kwarg_interpolation__ = Estacao.prototype.__init__.__handles_kwarg_interpolation__;
+    Estacao.prototype.set_pressao = async function set_pressao(pressao) {
+        var self = this;
+        "374";
+        self.pressao = pressao;
+    };
+    if (!Estacao.prototype.set_pressao.__argnames__) Object.defineProperties(Estacao.prototype.set_pressao, {
+        __argnames__ : {value: ["pressao"]},
+        __module__ : {value: null}
+    });
     Estacao.prototype.atualizar = async function atualizar(dt) {
         var self = this;
         var ρσ_ls, threshold_chuva, temp_alvo, norm_t;
-        "374";
-        self.tempo=self.tempo["+"](dt);
-        "375";
-        threshold_chuva = 995;
-        "376";
-        self.chuva_ativa = self.pressao["<"](threshold_chuva);
         "377";
+        self.tempo=self.tempo["+"](dt);
+        "378";
+        threshold_chuva = 995;
+        "379";
+        self.chuva_ativa = self.pressao["<"](threshold_chuva);
+        "380";
         if (self.chuva_ativa) {
             (await self.gerar_chuva());
         } else {
             (await self.limpar_chuva());
         }
-        "380";
+        "383";
         temp_alvo = 23["+"]((self.sol.fator_iluminacao[">"](0)) ? self.sol.fator_iluminacao["*"](8) : 0);
-        "381";
+        "384";
         if (self.chuva_ativa) {
             temp_alvo=temp_alvo["-"](2);
         }
-        "382";
-        self.temperatura=self.temperatura["+"](temp_alvo["-"](1["*"](self.temperatura))["*"](.05));
-        "384";
-        norm_t = max(0, min(1, self.temperatura["-"](1["*"](21))["/"](10)));
         "385";
-        self.base.color = vec(norm_t, 0, 1["-"](1["*"](norm_t)));
+        self.temperatura=self.temperatura["+"](temp_alvo["-"](1["*"](self.temperatura))["*"](.05));
         "387";
-        plot_temp.plot(self.tempo, self.temperatura);
+        norm_t = max(0, min(1, self.temperatura["-"](1["*"](21))["/"](10)));
         "388";
+        self.base.color = vec(norm_t, 0, 1["-"](1["*"](norm_t)));
+        "390";
+        plot_temp.plot(self.tempo, self.temperatura);
+        "391";
         plot_press.plot(self.tempo, self.pressao["-"](1["*"](950))["/"](5)["+"](20));
-        "389";
+        "392";
         plot_sol.plot(self.tempo, 20["+"](self.sol.fator_iluminacao["*"](10)));
     };
     if (!Estacao.prototype.atualizar.__argnames__) Object.defineProperties(Estacao.prototype.atualizar, {
@@ -1142,27 +1151,27 @@ async function __main__() {
     Estacao.prototype.gerar_chuva = async function gerar_chuva() {
         var self = this;
         var ρσ_ls, g;
-        "392";
+        "395";
         if (len(self.gotas)["<"](150)) {
-            "393";
-            g = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](100)["-"](1["*"](50))), radius: .2, color: vec(.6, .6, 1), emissive: true})]);
-            "395";
-            g.v = vec(0, 1["-u"]()["*"](35), 0);
             "396";
+            g = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({pos: vec(random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](240)["-"](1["*"](120)), random.random()["*"](100)["-"](1["*"](50))), radius: .2, color: vec(.6, .6, 1), emissive: true})]);
+            "398";
+            g.v = vec(0, 1["-u"]()["*"](35), 0);
+            "399";
             self.gotas.append(g);
         }
-        "397";
+        "400";
         var ρσ_Iter26 = self.gotas;
         ρσ_Iter26 = ((typeof ρσ_Iter26[Symbol.iterator] === "function") ? (ρσ_Iter26 instanceof Map ? ρσ_Iter26.keys() : ρσ_Iter26) : Object.keys(ρσ_Iter26));
         for (var ρσ_Index26 of ρσ_Iter26) {
             g = ρσ_Index26;
-            "398";
+            "401";
             g.pos=g.pos["+"](g.v["*"](.05));
-            "399";
+            "402";
             if (g.pos.y["<"](0)) {
                 g.pos.y = 40["+"](random.random()["*"](10));
             }
-            "400";
+            "403";
             g.visible = true;
         }
     };
@@ -1172,7 +1181,7 @@ async function __main__() {
     Estacao.prototype.limpar_chuva = async function limpar_chuva() {
         var self = this;
         var ρσ_ls, g;
-        "403";
+        "406";
         var ρσ_Iter27 = self.gotas;
         ρσ_Iter27 = ((typeof ρσ_Iter27[Symbol.iterator] === "function") ? (ρσ_Iter27 instanceof Map ? ρσ_Iter27.keys() : ρσ_Iter27) : Object.keys(ρσ_Iter27));
         for (var ρσ_Index27 of ρσ_Iter27) {
@@ -1194,105 +1203,128 @@ async function __main__() {
     
     
     
+    
 
-    "406";
+    "409";
     _GS_1 = new CicloSolar;
     (await _GS_1.__init__());
     sol = _GS_1;
-    "407";
+    "410";
     _GS_1 = new Cidade;
     (await _GS_1.__init__());
     cidade = _GS_1;
-    "408";
+    "411";
     _GS_1 = new Estacao;
     (await _GS_1.__init__(sol));
     estacao = _GS_1;
-    "410";
+    "413";
     _GS_1 = new TremMetro;
     (await _GS_1.__init__(cidade.z_metro1, 1));
     metro1 = _GS_1;
-    "411";
+    "414";
     _GS_1 = new TremMetro;
     (await _GS_1.__init__(cidade.z_metro2, 1["-u"]()["*"](1)));
     metro2 = _GS_1;
-    "413";
+    "416";
     carros = ρσ_list_decorate([]);
-    "415";
+    "418";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 0})]));
     for (var ρσ_Index28 = 0; ρσ_Index28["<"](7); ρσ_Index28++) {
         _ = ρσ_Index28;
         carros.append(_GS_1);
     }
-    "416";
+    "419";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1].concat([ρσ_desugar_kwargs({z_base: 1["-u"]()["*"](24)})]));
     for (var ρσ_Index29 = 0; ρσ_Index29["<"](7); ρσ_Index29++) {
         _ = ρσ_Index29;
         carros.append(_GS_1);
     }
-    "418";
+    "421";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida3})]));
     for (var ρσ_Index30 = 0; ρσ_Index30["<"](7); ρσ_Index30++) {
         _ = ρσ_Index30;
         carros.append(_GS_1);
     }
-    "419";
+    "422";
     _GS_1 = new Carro;
     ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, ["x", 1["-u"]()["*"](1)].concat([ρσ_desugar_kwargs({z_base: cidade.z_avenida4})]));
     for (var ρσ_Index31 = 0; ρσ_Index31["<"](7); ρσ_Index31++) {
         _ = ρσ_Index31;
         carros.append(_GS_1);
     }
-    "422";
-    async function muda_pressao(s) {
-        "423";
-        estacao.pressao = s.value;
+    "426";
+    async function pressao() {
+        var ρσ_ls, pressao;
+        "427";
+        pressao = random.uniform(980, 1040);
+        "428";
+        return pressao;
     };
-    if (!muda_pressao.__argnames__) Object.defineProperties(muda_pressao, {
-        __argnames__ : {value: ["s"]},
+    if (!pressao.__module__) Object.defineProperties(pressao, {
         __module__ : {value: null}
     });
 
-    "425";
-    scene.append_to_caption("\n<b>CLIMA:</b> Pressão ");
-    "426";
-    ρσ_interpolate_kwargs.call(this, slider, [ρσ_desugar_kwargs({min: 980, max: 1040, value: 1013, length: window.innerWidth["*"](.5), bind: muda_pressao})]);
     "429";
+    async function alternadorDeIntervalo() {
+        "430";
+        return random.randint(90, 240);
+    };
+    if (!alternadorDeIntervalo.__module__) Object.defineProperties(alternadorDeIntervalo, {
+        __module__ : {value: null}
+    });
+
+    "433";
     dt = .05;
-    "430";
+    "434";
     estado_anterior_escuro = false;
-    "432";
+    "437";
+    contadorDeMudancaPressao = 0;
+    "438";
+    intervaloMudancaPressao = 210;
+    "439";
     while (true) {
-        "433";
-        (await rate(30));
-        "434";
-        (await ajustar_tamanho());
-        "436";
-        esta_escuro = !(sol.eh_dia) || estacao.chuva_ativa;
-        "439";
-        (await sol.atualizar(dt, estacao.chuva_ativa));
         "440";
-        (await estacao.atualizar(dt));
+        (await rate(30));
+        "441";
+        contadorDeMudancaPressao=contadorDeMudancaPressao["+"](1);
         "442";
+        (await ajustar_tamanho());
+        "444";
+        esta_escuro = !(sol.eh_dia) || estacao.chuva_ativa;
+        "447";
+        if ((contadorDeMudancaPressao === intervaloMudancaPressao || typeof contadorDeMudancaPressao === "object" && ρσ_equals(contadorDeMudancaPressao, intervaloMudancaPressao))) {
+            "448";
+            contadorDeMudancaPressao = 0;
+            "449";
+            (await estacao.set_pressao((await pressao())));
+            "450";
+            intervaloMudancaPressao = (await alternadorDeIntervalo());
+        }
+        "453";
+        (await sol.atualizar(dt, estacao.chuva_ativa));
+        "454";
+        (await estacao.atualizar(dt));
+        "456";
         if ((esta_escuro !== estado_anterior_escuro && (typeof esta_escuro !== "object" || ρσ_not_equals(esta_escuro, estado_anterior_escuro)))) {
-            "443";
+            "457";
             (await cidade.gerenciar_luzes(esta_escuro));
-            "444";
+            "458";
             estado_anterior_escuro = esta_escuro;
         }
-        "446";
+        "460";
         var ρσ_Iter32 = carros;
         ρσ_Iter32 = ((typeof ρσ_Iter32[Symbol.iterator] === "function") ? (ρσ_Iter32 instanceof Map ? ρσ_Iter32.keys() : ρσ_Iter32) : Object.keys(ρσ_Iter32));
         for (var ρσ_Index32 of ρσ_Iter32) {
             c = ρσ_Index32;
-            "447";
+            "461";
             (await c.mover(dt, esta_escuro));
         }
-        "449";
+        "463";
         (await metro1.mover(dt, esta_escuro));
-        "450";
+        "464";
         (await metro2.mover(dt, esta_escuro));
     }
 };
@@ -1305,6 +1337,6 @@ if (!__main__.__module__) Object.defineProperties(__main__, {
 
 //--><!]]></script>
 </div>
-    </script>
+</script>
 </body>
 </html>
