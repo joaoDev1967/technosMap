@@ -1,7 +1,3 @@
-/*https://paletadecores.com/paleta/044b8f/033d7e/022f6d/01205c/00124b/ 
-
-
-*/
 @import url('https://fonts.googleapis.com/css2?family=Marcellus&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 * {
     margin:0;
@@ -16,46 +12,20 @@ header{
 }
 
 h1{
-    color:blanchedalmond;
+    color: white;
     font-family: "Marcellus", serif;
     font-size:25px;
     margin:0.4%;
 }
-h3{
-    color:azure;
-    font-family: "Marcellus", serif;
-    font-size: 30px;
-}
-
-.flex_row{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
 
 #temperatura_pressao{
     display: flex;
-    
     align-items: center;
     justify-content: center;
 }
 
 @media (max-width: 500px) {
-  h1 {
-    font-size: 20px;
-  }
-  h3{
-    color:azure;
-    font-family: "Marcellus", serif;
-    font-size: 20px;
-    }
-    p{
-        font-size: 10px;
-    }
-    .info_alteravel{
-        margin-top: 1%;
-        margin-bottom: 1%;
+    h1 {
+        font-size: 20px;
     }
 }
